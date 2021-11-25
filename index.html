@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang='en'>
+   <head>
+        <meta charset='utf-8'>
+        <meta name='description' content='For framing images in the Homebrewery'>
+        <link rel='stylesheet' href='styles.css'>
+        <title>framer</title>
+    </head>
+    <body>
+        <main>
+            <div class='left pane'>
+                <h1>framer</h1>
+                <p>Create <em>full page</em> image blends for your Homebrewery document.</p>
+                <div class='controls'>
+                        <h4>Image Settings</h4>
+                        <div>
+                            <label for='image-URL'>Image</label>
+                            <input type='url' id='image-URL' class='input' placeholder='image url' data='background-image' value='' />
+                        </div>
+                        <div>
+                            <label for='image-name'>Image Name</label>
+                            <input type='text' id='image-name' class='input' placeholder='image name' title='' value=''/>
+                        </div>
+                        <div>
+                            <label for='image-size'>Image Size</label>
+                            <input type='range' id='image-size' class='input' min='0' max='300' placeholder='image size' data='background-size' value='100'/>
+                        </div>
+                        <div>
+                            <label for='image-hoz-position'>Horizontal Position</label>
+                            <input type='range' id='image-hoz-position' class='input' min='' max='' step='.05' placeholder='horizontal pos' value='0'/>
+                        </div>
+                        <div>
+                            <label for='image-ver-position'>Vertical Position</label>
+                            <input type='range' id='image-ver-position' class='input' min='-11' max='11' step='.05' placeholder='vertical pos' value='0'/>
+                        </div>
+                        <h4>Frame/Blend Settings</h4>
+                        <ul>
+                            <li>assets/masks/LeftMask-min.png</li>
+                            <li>assets/masks/RightMask-min.png</li>
+                        </ul>
+                        <div>
+                            <label for='frame-URL'>Frame</label>
+                            <input type='url' id='mask-URL' class='input' placeholder='frame url' data='mask-image' value='' />
+                        </div>
+                        <div>
+                            <label for='frame-hoz-position'>Horizontal Position</label>
+                            <input type='range' id='frame-hoz-position' class='input' min='-8.5' max='8.5' step='.05' placeholder='horizontal pos' value='0'/>
+                        </div>
+                        <div>
+                            <label for='frame-ver-position'>Vertical Position</label>
+                            <input type='range' id='frame-ver-position' class='input' min='-11.5' max='11.5' step='.05' placeholder='vertical pos' value='0'/>
+                        </div>
+                </div>
+                <div id='code'>
+                    <h3>Text Editor:</h3>
+                    <textarea id='text-code'></textarea>
+                    <pre><code id='text-code2'></code></pre>
+                    <h3>Style Editor:</h3>
+                    <textarea id='style-code'></textarea>
+                </div>
+            
+            </div>
+            <div class='right pane'>
+                <div id='pages'>
+                    <div id='p1' class='page'>
+                        <div class='frame'>
+                            <img alt='' id='' src='' style='' />
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </main>
+        <footer>
+
+        </footer>
+       
+    </body>
+    <script src='main.js'></script>
+</html
