@@ -23,15 +23,15 @@
                         </div>
                         <div>
                             <label for='image-size'>Image Size</label>
-                            <input type='range' id='image-size' class='input' min='0' max='300' placeholder='image size' data='background-size' value='100'/>
+                            <input type='range' id='image-size' class='input' min='0' max='300' value='100'/>
                         </div>
                         <div>
                             <label for='image-hoz-position'>Horizontal Position</label>
-                            <input type='range' id='image-hoz-position' class='input' min='' max='' step='.05' placeholder='horizontal pos' value='0'/>
+                            <input type='range' id='image-hoz-position' class='input' min='' max='' step='1' value='0'/>
                         </div>
                         <div>
                             <label for='image-ver-position'>Vertical Position</label>
-                            <input type='range' id='image-ver-position' class='input' min='-11' max='11' step='.05' placeholder='vertical pos' value='0'/>
+                            <input type='range' id='image-ver-position' class='input' min='' max='' step='1' value='0'/>
                         </div>
                         <h4>Frame/Blend Settings</h4>
                         <ul>
@@ -39,16 +39,20 @@
                             <li>assets/masks/RightMask-min.png</li>
                         </ul>
                         <div>
-                            <label for='frame-URL'>Frame</label>
-                            <input type='url' id='mask-URL' class='input' placeholder='frame url' data='mask-image' value='' />
+                            <label for='mask-URL'>Frame</label>
+                            <input type='url' id='mask-URL' class='input' placeholder='frame url' value='' />
                         </div>
                         <div>
-                            <label for='frame-hoz-position'>Horizontal Position</label>
-                            <input type='range' id='frame-hoz-position' class='input' min='-8.5' max='8.5' step='.05' placeholder='horizontal pos' value='0'/>
+                            <label for='frame-size'>Frame Size</label>
+                            <input type='range' id='frame-size' class='input' min='0' max='300' value='100'/>
                         </div>
                         <div>
-                            <label for='frame-ver-position'>Vertical Position</label>
-                            <input type='range' id='frame-ver-position' class='input' min='-11.5' max='11.5' step='.05' placeholder='vertical pos' value='0'/>
+                            <label for='frame-hoz-position'>Frame Horizontal Position</label>
+                            <input type='range' id='frame-hoz-position' class='input' min='0' max='100' step='1' value='0'/>
+                        </div>
+                        <div>
+                            <label for='frame-ver-position'>Frame Vertical Position</label>
+                            <input type='range' id='frame-ver-position' class='input' min='0' max='100' step='1' value='0'/>
                         </div>
                 </div>
                 <div id='code'>
@@ -61,9 +65,10 @@
             
             </div>
             <div class='right pane'>
+                <style></style>
                 <div id='pages'>
                     <div id='p1' class='page'>
-                        <div class='frame'>
+                        <div id='watercolor-frame' class='frame'>
                             <img alt='' id='' src='' style='' />
                         </div>
                     </div>
