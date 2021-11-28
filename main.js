@@ -12,12 +12,15 @@ const pageElement = document.getElementsByClassName('page')[0];
 //  BACKGROUND CSS
 let backgroundStyles = {
     frame : {
-        'background-color'  : '#a005',
-        'background-size'   : 'cover',
-        'position'          : 'absolute',
-        'mask-mode'         : 'alpha',
-        'mask-position-x'   : '0%',
-        'mask-position-y'   : '0%',
+        'background-color'      : '#a005',
+        'background-size'       : 'cover',
+        'position'              : 'absolute',
+        'mask-mode'             : 'alpha',
+        'mask-position-x'       : '0%',
+        'mask-position-y'       : '0%',
+        '-webkit-mask-repeat'   : 'no-repeat',
+        '-webkit-mask-size'     : 'cover',
+        'margin-top'            : '0 !important'
     },
     img : {
         'position'  : 'absolute',
@@ -29,13 +32,11 @@ let backgroundStyles = {
 let frameTag = {
     tag : 'div',
     styles : {
-        'mask-image'        : `url('assets/masks/RightMask-min.png')`,
-        'mask-repeat'       : 'no-repeat',
-        'mask-size'         : 'cover',
-        'top'               : '0',
-        'left'              : '0',
-        'height'            : '100%',
-        'width'             : '100%',
+        '-webkit-mask-image'    : `url(assets/masks/RightMask-min.png)`,
+        'top'                   : '0',
+        'left'                  : '0',
+        'height'                : '100%',
+        'width'                 : '100%',
     },
     attributes : {
         'id'        : undefined,
@@ -134,6 +135,8 @@ document.getElementById('image-size').addEventListener('input',(evt)=>{
         delete imageTag.styles.height;
         imageTag.styles.width = `${Math.round(frameElement.getBoundingClientRect().width * (parseFloat(evt.target.value) / 100))}px`;
     };
+    evt.target.setAttribute('value', evt.target.value);
+    evt.target.setAttribute('title', evt.target.value + '%');
     hozInput.min = `${(imageElement.getBoundingClientRect().width + 1) * -1}`;  // the +1 is because of the rounding...without it, it sometimes doesn't allow for shifting completely off page
     hozInput.max = `${pageElement.getBoundingClientRect().width + 1}`;
     verInput.min = `${(imageElement.getBoundingClientRect().height + 1) * -1}`;
@@ -162,7 +165,7 @@ function updateFrameTag() {
 }
 
 document.getElementById('mask-URL').addEventListener('input',(evt)=>{
-    frameTag.styles["mask-image"] = evt.target.value.length > 0 ? `url(${evt.target.value})` : '';
+    frameTag.styles["-webkit-mask-image"] = evt.target.value.length > 0 ? `url(${evt.target.value})` : '';
 
     getRatio(evt.target.value);
     updateFrameTag();
@@ -205,7 +208,7 @@ document.getElementById('frame-ver-position').addEventListener('input',(evt)=>{
 function getRatio(image) {
     const img = new Image();
     img.addEventListener("load", function(){
-        frameTag.meta.bgImgRatio = this.naturalWidth / this.naturalHeight;
+        frameTag.meta.bgImgRatio = Math.round(this.naturalWidth / this.naturalHeight);
     });
     img.src = image;
 };
