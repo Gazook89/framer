@@ -163,9 +163,8 @@ function updateFrameTag() {
 
 document.getElementById('mask-URL').addEventListener('input',(evt)=>{
     frameTag.styles["mask-image"] = evt.target.value.length > 0 ? `url(${evt.target.value})` : '';
-    const img = new Image();
-    img.src= document.getElementById('mask-URL').value;
-    frameTag.meta.bgImgRatio = img.naturalWidth / img.naturalHeight;
+
+    getRatio(evt.target.value);
     updateFrameTag();
 });
 
@@ -203,3 +202,10 @@ document.getElementById('frame-ver-position').addEventListener('input',(evt)=>{
 
 
 
+function getRatio(image) {
+    const img = new Image();
+    img.addEventListener("load", function(){
+        frameTag.meta.bgImgRatio = this.naturalWidth / this.naturalHeight;
+    });
+    img.src = image;
+};
