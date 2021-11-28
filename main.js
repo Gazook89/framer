@@ -40,6 +40,9 @@ let frameTag = {
     attributes : {
         'id'        : undefined,
         'className' : 'frame'
+    },
+    meta : {
+        'bgImgRatio' : undefined
     }
 };
 
@@ -160,25 +163,25 @@ function updateFrameTag() {
 
 document.getElementById('mask-URL').addEventListener('input',(evt)=>{
     frameTag.styles["mask-image"] = evt.target.value.length > 0 ? `url(${evt.target.value})` : '';
+    const img = new Image();
+    img.src= document.getElementById('mask-URL').value;
+    frameTag.meta.bgImgRatio = img.naturalWidth / img.naturalHeight;
     updateFrameTag();
 });
 
 document.getElementById('frame-size').addEventListener('input',(evt)=>{
     const orientation = pageElement.getBoundingClientRect().height > pageElement.getBoundingClientRect().width ? 'portrait' : 'landscape';
-    let imgRatio;
-    const img = new Image();
-    img.src= document.getElementById('mask-URL').value;
-    imgRatio = img.naturalWidth / img.naturalHeight;
+
     const hozInput = document.getElementById('frame-hoz-position');
     const verInput = document.getElementById('frame-ver-position');
     // take % value of input and apply it to frames height
     if(orientation === 'portrait'){
         frameTag.styles.height = `${Math.round(pageElement.getBoundingClientRect().height * (parseFloat(evt.target.value) / 100))}px`;
-        frameTag.styles.width = parseFloat(frameTag.styles.height) * imgRatio + 'px';
+        frameTag.styles.width = parseFloat(frameTag.styles.height) * frameTag.meta.bgImgRatio + 'px';
         console.log(`height: ${frameTag.styles.height} -- width: ${frameTag.styles.width}`);
     } else {
         frameTag.styles.width = `${Math.round(pageElement.getBoundingClientRect().width * (parseFloat(evt.target.value) / 100))}px`;
-        frameTag.styles.height = parseFloat(frameTag.styles.width) * imgRatio + 'px';
+        frameTag.styles.height = parseFloat(frameTag.styles.width) * frameTag.meta.bgImgRatio + 'px';
         console.log(`height: ${frameTag.styles.height} -- width: ${frameTag.styles.width}`);
     };
     hozInput.min = `${(frameElement.getBoundingClientRect().width + 1) * -1}`;  // the +1 is because of the rounding...without it, it sometimes doesn't allow for shifting completely off page
