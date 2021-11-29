@@ -13,6 +13,10 @@ Array.prototype.sample = function(){
     return this[Math.floor(Math.random()*this.length)];
 };
 
+function randomInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
 //  BACKGROUND CSS
 let backgroundStyles = {
     frame : {
@@ -247,27 +251,27 @@ const presetMasks = [
     {
         maskName : 'top-and-left',
         images : [
-            {url: undefined, repeat: undefined, rotate: 0}
+            {url: undefined, repeat: undefined}
         ]
     },
     {
         maskName : 'top',
         images: [
-            {url: 'assets/masks/WC_Horizontal_1_rptX-min.png', repeat: 'x', rotate: 0},
-            {url: 'assets/masks/WC_Horizontal_2_rptX-min.png', repeat: 'x', rotate: 0},
-            {url: 'assets/masks/WC_Horizontal_3_rptX-min.png', repeat: 'x', rotate: 0}
+            {url: 'assets/masks/WC_Horizontal_1_rptX-min.png', repeat: 'x'},
+            {url: 'assets/masks/WC_Horizontal_2_rptX-min.png', repeat: 'x'},
+            {url: 'assets/masks/WC_Horizontal_3_rptX-min.png', repeat: 'x'}
         ]
     },
     {
         maskName : 'left',
         images: [
-            {url: 'assets/masks/LeftMask-min.png', repeat: null, rotate: 0}
+            {url: 'assets/masks/LeftMask-min.png', repeat: null}
         ]
     },
     {
         maskName : 'right',
         images: [
-            {url: 'assets/masks/RightMask-min.png', repeat: null, rotate: 0}
+            {url: 'assets/masks/RightMask-min.png', repeat: null}
         ]
     }
 ]
@@ -275,7 +279,12 @@ const presetMasks = [
 function setMask(preset) {
     let maskType = preset.getAttribute('data-coverage');
     maskType = presetMasks.find(mask => mask.maskName === maskType);
-    document.getElementById('mask-URL').value = maskType.images.sample().url;
+    specificMaskFile = maskType.images.sample();
+    document.getElementById('mask-URL').value = specificMaskFile.url;
+    if(specificMaskFile.repeat){
+        frameTag.styles[`-webkit-mask-repeat`] = `repeat-${specificMaskFile.repeat}`;
+        frameTag.styles[`-webkit-mask-position-${specificMaskFile.repeat}`] = `${randomInteger(0,800)}px`;
+    };
     document.getElementById('mask-URL').dispatchEvent(new Event('change'));
 
     updateFrameTag();
