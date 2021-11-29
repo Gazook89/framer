@@ -23,7 +23,10 @@
                         </div>
                         <div>
                             <label for='image-size'>Image Size</label>
-                            <input type='range' id='image-size' class='input' min='0' max='300' value='100'/>
+                            <input type='range' id='image-size' class='input' min='0' max='300' value='100' list='image-number'/>
+                            <datalist id="image-number">
+                                <option>100</option>
+                            </datalist>
                         </div>
                         <div>
                             <label for='image-hoz-position'>Horizontal Position</label>
@@ -44,7 +47,10 @@
                         </div>
                         <div>
                             <label for='frame-size'>Frame Size</label>
-                            <input type='range' id='frame-size' class='input' min='0' max='300' value='100'/>
+                            <input type='range' id='frame-size' class='input' min='0' max='300' value='100' list='frame-number'/>
+                            <datalist id="frame-number">
+                                <option>100</option>
+                            </datalist>
                         </div>
                         <div>
                             <label for='frame-hoz-position'>Frame Horizontal Position</label>

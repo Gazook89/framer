@@ -186,6 +186,8 @@ document.getElementById('frame-size').addEventListener('input',(evt)=>{
         frameTag.styles.height = parseFloat(frameTag.styles.width) * frameTag.meta.bgImgRatio + 'px';
         console.log(`height: ${frameTag.styles.height} -- width: ${frameTag.styles.width}`);
     };
+    evt.target.setAttribute('value', evt.target.value);
+    evt.target.setAttribute('title', evt.target.value + '%');
     hozInput.min = `${(frameElement.getBoundingClientRect().width + 1) * -1}`;  // the +1 is because of the rounding...without it, it sometimes doesn't allow for shifting completely off page
     hozInput.max = `${pageElement.getBoundingClientRect().width + 1}`;
     verInput.min = `${(frameElement.getBoundingClientRect().height + 1) * -1}`;
