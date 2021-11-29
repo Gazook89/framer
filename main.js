@@ -9,15 +9,6 @@ const imageElement = document.querySelector('#watercolor-frame > img');
 const frameElement = document.getElementsByClassName('frame')[0];
 const pageElement = document.getElementsByClassName('page')[0];
 
-console.log(window.location.href);
-
-let env;
-if(window.location.href.startsWith('https')){
-    env = 'prod';
-} else {
-    env = 'local';
-};
-
 Array.prototype.sample = function(){
     return this[Math.floor(Math.random()*this.length)];
 };
@@ -199,11 +190,9 @@ document.getElementById('frame-size').addEventListener('input',(evt)=>{
     if(orientation === 'portrait'){
         frameTag.styles.height = `${Math.round(pageElement.getBoundingClientRect().height * (parseFloat(evt.target.value) / 100))}px`;
         frameTag.styles.width = parseFloat(frameTag.styles.height) * frameTag.meta.bgImgRatio + 'px';
-        console.log(`height: ${frameTag.styles.height} -- width: ${frameTag.styles.width}`);
     } else {
         frameTag.styles.width = `${Math.round(pageElement.getBoundingClientRect().width * (parseFloat(evt.target.value) / 100))}px`;
         frameTag.styles.height = parseFloat(frameTag.styles.width) * frameTag.meta.bgImgRatio + 'px';
-        console.log(`height: ${frameTag.styles.height} -- width: ${frameTag.styles.width}`);
     };
     evt.target.setAttribute('value', evt.target.value);
     evt.target.setAttribute('title', evt.target.value + '%');
