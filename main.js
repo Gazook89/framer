@@ -19,7 +19,7 @@ let backgroundStyles = {
         'mask-position-x'       : '0%',
         'mask-position-y'       : '0%',
         '-webkit-mask-repeat'   : 'no-repeat',
-        '-webkit-mask-size'     : 'cover',
+        '-webkit-mask-size'     : 'contain',
         'margin-top'            : '0 !important'
     },
     img : {
