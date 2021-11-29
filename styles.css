@@ -179,6 +179,11 @@ textarea {
     transition:all .1s ease;
 }
 
+#mask-URL-container:hover #mask-presets {
+    height: 400px;
+    transition:all .4s .4s ease;
+}
+
 #mask-presets {
 	flex: 1 1 100%;
 	display: grid;
@@ -192,7 +197,8 @@ textarea {
 	align-items: center;
 	overflow-y: scroll;
 	scrollbar-width: none;
-	height: 400px;
+	height: 0px;
+    transition:all .4s  ease;
 }
 
   .preset {
