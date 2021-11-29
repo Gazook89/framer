@@ -77,9 +77,11 @@ h1::after {
 .right.pane {
     flex: 1 1 auto;
     display:flex;
+    flex-wrap: wrap;
     justify-content: center;
     overflow-y: scroll;
     height: 100vh;
+    position:relative;
 }
 
 
@@ -127,3 +129,44 @@ textarea {
     padding:0;
 }
 
+#preview-hover-area {
+    position: sticky;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    height: 20vh;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#preview-tools {
+	position: absolute;
+	background: red;
+	height: 30px;
+	border: 3px solid ghostwhite;
+	border-radius: 10px;
+	padding: 5px 20px;
+    filter: drop-shadow(0 2px 2px black);
+    opacity:0;
+    transition: all 2s ease;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#preview-hover-area:hover #preview-tools {
+    opacity:1;
+    transition: all .6s ease;
+}
+
+#preview-tools .preview-tool-item {
+    aspect-ratio: 1 / 1;
+    height: 90%;
+    border-radius: 5px;
+    text-align: center;
+    filter: drop-shadow(0px 2px 2px black);
+    background: red;
+    user-select: none;
+    cursor: pointer;
+}
