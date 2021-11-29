@@ -184,7 +184,7 @@ function updateFrameTag() {
 }
 
 ['input','change'].forEach(eventType=>document.getElementById('mask-URL').addEventListener(eventType,(evt)=>{
-    frameTag.styles["-webkit-mask-image"] = evt.target.value.length > 0 ? `url(${window.location.href + evt.target.value})` : '';
+    frameTag.styles["-webkit-mask-image"] = evt.target.value.length > 0 ? `url(${evt.target.value})` : '';
 
     getRatio(evt.target.value);
     updateFrameTag();
@@ -266,21 +266,21 @@ const presetMasks = [
     {
         maskName : 'top',
         images: [
-            {url: 'assets/masks/WC_Horizontal_1_rptX-min.png', repeat: 'x'},
-            {url: 'assets/masks/WC_Horizontal_2_rptX-min.png', repeat: 'x'},
-            {url: 'assets/masks/WC_Horizontal_3_rptX-min.png', repeat: 'x'}
+            {url: window.location.href + 'assets/masks/WC_Horizontal_1_rptX-min.png', repeat: 'x'},
+            {url: window.location.href + 'assets/masks/WC_Horizontal_2_rptX-min.png', repeat: 'x'},
+            {url: window.location.href + 'assets/masks/WC_Horizontal_3_rptX-min.png', repeat: 'x'}
         ]
     },
     {
         maskName : 'left',
         images: [
-            {url: 'assets/masks/LeftMask-min.png', repeat: null}
+            {url: window.location.href + 'assets/masks/LeftMask-min.png', repeat: null}
         ]
     },
     {
         maskName : 'right',
         images: [
-            {url: 'assets/masks/RightMask-min.png', repeat: null}
+            {url: window.location.href + 'assets/masks/RightMask-min.png', repeat: null}
         ]
     }
 ]
