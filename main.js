@@ -9,13 +9,22 @@ const imageElement = document.querySelector('#watercolor-frame > img');
 const frameElement = document.getElementsByClassName('frame')[0];
 const pageElement = document.getElementsByClassName('page')[0];
 
+console.log(window.location.href);
+
+let env;
+if(window.location.href.startsWith('https')){
+    env = 'prod';
+} else {
+    env = 'local';
+};
+
 Array.prototype.sample = function(){
     return this[Math.floor(Math.random()*this.length)];
 };
 
 function randomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+}
 
 //  BACKGROUND CSS
 let backgroundStyles = {
@@ -175,7 +184,7 @@ function updateFrameTag() {
 }
 
 ['input','change'].forEach(eventType=>document.getElementById('mask-URL').addEventListener(eventType,(evt)=>{
-    frameTag.styles["-webkit-mask-image"] = evt.target.value.length > 0 ? `url(${evt.target.value})` : '';
+    frameTag.styles["-webkit-mask-image"] = evt.target.value.length > 0 ? `url(${window.location.href + evt.target.value})` : '';
 
     getRatio(evt.target.value);
     updateFrameTag();
@@ -284,7 +293,11 @@ function setMask(preset) {
     if(specificMaskFile.repeat){
         frameTag.styles[`-webkit-mask-repeat`] = `repeat-${specificMaskFile.repeat}`;
         frameTag.styles[`-webkit-mask-position-${specificMaskFile.repeat}`] = `${randomInteger(0,800)}px`;
-    };
+    } else {
+        delete frameTag.styles[`-webkit-mask-repeat`];
+        delete frameTag.styles[`-webkit-mask-position-x`];  // could possibly be done with one line, deleting only x or y if needed
+        delete frameTag.styles[`-webkit-mask-position-y`];
+    }
     document.getElementById('mask-URL').dispatchEvent(new Event('change'));
 
     updateFrameTag();
