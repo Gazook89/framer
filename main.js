@@ -9,6 +9,10 @@ const imageElement = document.querySelector('#watercolor-frame > img');
 const frameElement = document.getElementsByClassName('frame')[0];
 const pageElement = document.getElementsByClassName('page')[0];
 
+Array.prototype.sample = function(){
+    return this[Math.floor(Math.random()*this.length)];
+};
+
 //  BACKGROUND CSS
 let backgroundStyles = {
     frame : {
@@ -62,6 +66,8 @@ let imageTag = {
     }
     
 }
+
+
 
 
 
@@ -232,4 +238,42 @@ function zoomIn() {
     page.style.transformOrigin = 'top center';
     page.style.transform = `scale(${scale + .1})`;
 
+}
+
+
+// MASK PRESETS
+
+const presetMasks = [
+    {
+        maskName : 'top-and-left',
+        images : [
+            {url: undefined, repeat: undefined, rotate: 0}
+        ]
+    },
+    {
+        maskName : 'top',
+        images: [
+            {url: 'assets/masks/WC_Horizontal_1_rptX-min.png', repeat: 'x', rotate: 0},
+            {url: 'assets/masks/WC_Horizontal_2_rptX-min.png', repeat: 'x', rotate: 0},
+            {url: 'assets/masks/WC_Horizontal_3_rptX-min.png', repeat: 'x', rotate: 0}
+        ]
+    },
+    {
+        maskName : 'left',
+        images: [
+            {url: 'assets/masks/LeftMask-min.png', repeat: null, rotate: 0}
+        ]
+    },
+    {
+        maskName : 'right',
+        images: [
+            {url: 'assets/masks/RightMask-min.png', repeat: null, rotate: 0}
+        ]
+    }
+]
+
+function setMask(preset) {
+    let maskType = preset.getAttribute('data-coverage');
+    maskType = presetMasks.find(mask => mask.maskName === maskType);
+    document.getElementById('mask-URL').value = maskType.images.sample().url;
 }
