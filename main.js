@@ -214,3 +214,22 @@ function getRatio(image) {
     });
     img.src = image;
 };
+
+
+//  PREVIEW PANE TOOLS
+
+function zoomOut() {
+    const page = document.getElementById('p1');
+    let scale =  page.getBoundingClientRect().width / page.offsetWidth;
+    page.style.transformOrigin = 'top center';
+    page.style.transform = `scale(${scale - .1})`;
+
+}
+
+function zoomIn() {
+    const page = document.getElementById('p1');
+    let scale =  page.getBoundingClientRect().width / page.offsetWidth;
+    page.style.transformOrigin = 'top center';
+    page.style.transform = `scale(${scale + .1})`;
+
+}

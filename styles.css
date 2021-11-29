@@ -98,6 +98,7 @@ h1::after {
 }
 
 .page {
+    flex: 0 0 auto;
     height:11in;
     width: 8.5in;
     background-image: url('assets/backgrounds/BasicWatercolor-min.png');
@@ -153,6 +154,7 @@ textarea {
     display:flex;
     justify-content: center;
     align-items: center;
+    gap: 6px;
 }
 
 #preview-hover-area:hover #preview-tools {
@@ -169,4 +171,10 @@ textarea {
     background: red;
     user-select: none;
     cursor: pointer;
+    transition:all .1s ease;
+}
+
+#preview-tools .preview-tool-item:active {
+    filter: drop-shadow(0 0 1px black);
+    transition:all .1s ease;
 }
