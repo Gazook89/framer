@@ -170,12 +170,12 @@ function updateFrameTag() {
     printCodeForTextEditor()
 }
 
-document.getElementById('mask-URL').addEventListener('input',(evt)=>{
+['input','change'].forEach(eventType=>document.getElementById('mask-URL').addEventListener(eventType,(evt)=>{
     frameTag.styles["-webkit-mask-image"] = evt.target.value.length > 0 ? `url(${evt.target.value})` : '';
 
     getRatio(evt.target.value);
     updateFrameTag();
-});
+}));
 
 document.getElementById('frame-size').addEventListener('input',(evt)=>{
     const orientation = pageElement.getBoundingClientRect().height > pageElement.getBoundingClientRect().width ? 'portrait' : 'landscape';
@@ -276,4 +276,7 @@ function setMask(preset) {
     let maskType = preset.getAttribute('data-coverage');
     maskType = presetMasks.find(mask => mask.maskName === maskType);
     document.getElementById('mask-URL').value = maskType.images.sample().url;
+    document.getElementById('mask-URL').dispatchEvent(new Event('change'));
+
+    updateFrameTag();
 }
