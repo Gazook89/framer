@@ -27,7 +27,7 @@ let backgroundStyles = {
         'mask-position-x'       : '0%',
         'mask-position-y'       : '0%',
         '-webkit-mask-repeat'   : 'no-repeat',
-        '-webkit-mask-size'     : 'cover', // may need to be changed to contain??
+        '-webkit-mask-size'     : 'contain', 
         'margin-top'            : '0 !important'
     },
     img : {
@@ -265,21 +265,43 @@ const presetMasks = [
     {
         maskName : 'top',
         images: [
-            {url: window.location.href + 'assets/masks/WC_Horizontal_1_rptX-min.png', repeat: 'x'},
-            {url: window.location.href + 'assets/masks/WC_Horizontal_2_rptX-min.png', repeat: 'x'},
-            {url: window.location.href + 'assets/masks/WC_Horizontal_3_rptX-min.png', repeat: 'x'}
+            {url: window.location.href + 'assets/masks/WC_Horizontal_Top_1_rptX-min.png', repeat: 'x'},
+            {url: window.location.href + 'assets/masks/WC_Horizontal_Top_2_rptX-min.png', repeat: 'x'},
+            {url: window.location.href + 'assets/masks/WC_Horizontal_Top_3_rptX-min.png', repeat: 'x'},
+            {url: window.location.href + 'assets/masks/WC_Horizontal_Top_4_rptX-min.png', repeat: 'x'},
+            {url: window.location.href + 'assets/masks/WC_Horizontal_Top_5_rptX-min.png', repeat: 'x'}
         ]
     },
     {
         maskName : 'left',
         images: [
-            {url: window.location.href + 'assets/masks/LeftMask-min.png', repeat: null}
+            {url: window.location.href + 'assets/masks/WC_Vertical_Left_1_rptY-min.png', repeat: 'y'},
+            {url: window.location.href + 'assets/masks/WC_Vertical_Left_2_rptY-min.png', repeat: 'y'},
+            {url: window.location.href + 'assets/masks/WC_Vertical_Left_3-min.png', repeat: null}
+        ]
+    },
+    {
+        maskName : 'center',
+        images: [
+            {url: window.location.href + 'assets/masks/WC_Center_1-min.png', repeat: null},
+            {url: window.location.href + 'assets/masks/WC_Center_2-min.png', repeat: null},
+            {url: window.location.href + 'assets/masks/WC_Center_3-min.png', repeat: null},
+            {url: window.location.href + 'assets/masks/WC_Center_4-min.png', repeat: null}
         ]
     },
     {
         maskName : 'right',
         images: [
-            {url: window.location.href + 'assets/masks/RightMask-min.png', repeat: null}
+            {url: window.location.href + 'assets/masks/WC_Vertical_Right_1_rptY-min.png', repeat: 'y'},
+            {url: window.location.href + 'assets/masks/WC_Vertical_Right_2_rptY-min.png', repeat: 'y'},
+            {url: window.location.href + 'assets/masks/WC_Vertical_Right_3-min.png', repeat: null}
+        ]
+    },
+    {
+        maskName : 'bottom',
+        images: [
+            {url: window.location.href + 'assets/masks/WC_Horizontal_Bottom_1_rptX-min.png', repeat: 'x'},
+            {url: window.location.href + 'assets/masks/WC_Horizontal_Bottom_2_rptX-min.png', repeat: 'x'}
         ]
     }
 ]
