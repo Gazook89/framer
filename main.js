@@ -176,7 +176,11 @@ function updateFrameTag() {
 
 ['input','change'].forEach(eventType=>document.getElementById('mask-URL').addEventListener(eventType,(evt)=>{
     frameTag.styles["-webkit-mask-image"] = evt.target.value.length > 0 ? `url(${evt.target.value})` : '';
-
+    if(new RegExp(/gazook89/).test(evt.target.value)){
+        delete frameTag.styles[`-webkit-mask-repeat`];
+        delete frameTag.styles[`-webkit-mask-position-x`];  // could possibly be done with one line, deleting only x or y if needed
+        delete frameTag.styles[`-webkit-mask-position-y`];
+    }
     getRatio(evt.target.value);
     updateFrameTag();
 }));
