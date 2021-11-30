@@ -27,7 +27,7 @@ let backgroundStyles = {
         'mask-position-x'       : '0%',
         'mask-position-y'       : '0%',
         '-webkit-mask-repeat'   : 'no-repeat',
-        '-webkit-mask-size'     : 'contain',
+        '-webkit-mask-size'     : 'cover', // may need to be changed to contain??
         'margin-top'            : '0 !important'
     },
     img : {
