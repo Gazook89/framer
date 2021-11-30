@@ -4,7 +4,8 @@ html, body {
     color: ghostwhite;
     overflow: hidden; 
     padding: 0; 
-    margin: 0
+    margin: 0;
+    text-rendering: optimizelegibility;
 }
 
 main {
@@ -38,6 +39,18 @@ h1::after {
 	height: 100%;
 	background: red;
 	mix-blend-mode: screen;
+}
+
+p {
+	font-family: arial;
+	line-height: 1.8em;
+	font-size: 14px;
+	margin-bottom: 2em;
+    letter-spacing: .01em;
+}
+
+strong {
+	color: #ff4c4c;
 }
 
 .controls {

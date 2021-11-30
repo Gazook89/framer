@@ -11,6 +11,13 @@
             <div class='left pane'>
                 <h1>framer</h1>
                 <p>Create <em>full page</em> image blends for your Homebrewery document.</p>
+                <details>
+                    <summary>Info</summary>
+                    <p>The hope is to simplify creating full page watercolor blends for Homebrewery v3 brews by offering a graphical user interface (GUI). Use the text fields and sliders to create and position your blended image, and copy/paste both text areas at the bottom into your brews "Text Editor" and "Style Editor" panes in the Homebrewery.</p>
+                    <p>Blends are conceptualized as being a <em>frame</em> which contains your <em>image</em>. Position and size your image within the frame, and then move the frame around the page.  If your frame is larger than the image, you will see a faded red color-- either reduce your frame size, or increase your image size.  Don't worry, though: the red will not show in the Homebrewery if you don't fix it.</p>
+                    <p>The frames contain a CSS Alpha Mask, meaning a .png file with portions of the mask being transparent.  Any .png file that has varying transparency will work as a mask/frame-- the actual <em>color</em> of any opaque pixel doesn't matter, just its alpha/opacity value. <strong>Notably, this means one mask will blend with any kind of page background.</strong></p>
+                    <p>Included in <em>framer</em> are a number of preset blends that can be chosen via the generic thumbnails within the "Frame" input area.  However, the text input field accepts any other .png file (but must be hosted elsewhere, such as Imgur).  <em>NOTE: Stains available from /u/flamable-concrete's fantastic repository are not currently working directly though I wish they would (CORS error I don't know how to fix).</em></p>
+                </details>
                 <div class='controls'>
                         <h4>Image Settings</h4>
                         <div>
