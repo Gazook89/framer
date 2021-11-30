@@ -108,6 +108,8 @@ h1::after {
     overflow: clip;
     margin: 30px;
     box-shadow: 0px 0px 25px black;
+    transform:scale(1);
+    transform-origin:top;
 }
 
 .frame img {

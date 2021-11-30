@@ -121,19 +121,21 @@ function updateImageTag() {
 
 }
 
-document.getElementById('image-URL').addEventListener('input',(evt)=>{
+['input','change'].forEach(eventType=>document.getElementById('image-URL').addEventListener(eventType,(evt)=>{
     imageTag.attributes.src = evt.target.value;
+    document.getElementById('image-size').dispatchEvent(new Event('change'));
     updateImageTag()
-});
+}));
 
-document.getElementById('image-name').addEventListener('input',(evt)=>{
+['input','change'].forEach(eventType=>document.getElementById('image-name').addEventListener(eventType,(evt)=>{
     imageTag.attributes.alt = evt.target.value;
     imageTag.attributes.title = evt.target.value;
     imageTag.attributes.id = '#' + evt.target.value.split(" ").join("-");
     updateImageTag()
-});
+}));
 
-document.getElementById('image-size').addEventListener('input',(evt)=>{
+['input','change','load'].forEach(eventType=>document.getElementById('image-size').addEventListener(eventType,(evt)=>{
+    console.log('fart');
     const orientation = frameElement.getBoundingClientRect().height > frameElement.getBoundingClientRect().width ? 'portrait' : 'landscape';
     const hozInput = document.getElementById('image-hoz-position');
     const verInput = document.getElementById('image-ver-position');
@@ -152,17 +154,18 @@ document.getElementById('image-size').addEventListener('input',(evt)=>{
     verInput.min = `${(imageElement.getBoundingClientRect().height + 1) * -1}`;
     verInput.max = `${pageElement.getBoundingClientRect().height + 1}`;
     updateImageTag()
-});
+}));
 
-document.getElementById('image-hoz-position').addEventListener('input',(evt)=>{
+['input','change'].forEach(eventType=>document.getElementById('image-hoz-position').addEventListener(eventType,(evt)=>{
     imageTag.styles.left = `${Math.round(evt.target.value)}px`;
     updateImageTag()
-});
+}));
 
-document.getElementById('image-ver-position').addEventListener('input',(evt)=>{
+
+['input','change'].forEach(eventType=>document.getElementById('image-ver-position').addEventListener(eventType,(evt)=>{
     imageTag.styles.top = `${Math.round(evt.target.value)}px`;
     updateImageTag()
-});
+}));
 
 
 // MASK
@@ -177,16 +180,18 @@ function updateFrameTag() {
 ['input','change'].forEach(eventType=>document.getElementById('mask-URL').addEventListener(eventType,(evt)=>{
     frameTag.styles["-webkit-mask-image"] = evt.target.value.length > 0 ? `url(${evt.target.value})` : '';
     isGazookImage = /gazook89/;
-    if(isGazookImage.test(frameTag.styles["-webkit-mask-image"]) === false){
+    isLocalHost = /127.0.0.1/;
+    if(isGazookImage.test(frameTag.styles["-webkit-mask-image"]) && isLocalHost.test(frameTag.styles["-webkit-mask-image"])  === false){
         delete frameTag.styles[`-webkit-mask-repeat`];
         delete frameTag.styles[`-webkit-mask-position-x`];  // could possibly be done with one line, deleting only x or y if needed
         delete frameTag.styles[`-webkit-mask-position-y`];
     };
     getRatio(evt.target.value);
+    document.getElementById('frame-size').dispatchEvent(new Event('change'));
     updateFrameTag();
 }));
 
-document.getElementById('frame-size').addEventListener('input',(evt)=>{
+['input','change'].forEach(eventType=>document.getElementById('frame-size').addEventListener(eventType,(evt)=>{
     const orientation = pageElement.getBoundingClientRect().height > pageElement.getBoundingClientRect().width ? 'portrait' : 'landscape';
 
     const hozInput = document.getElementById('frame-hoz-position');
@@ -206,17 +211,17 @@ document.getElementById('frame-size').addEventListener('input',(evt)=>{
     verInput.min = `${(frameElement.getBoundingClientRect().height + 1) * -1}`;
     verInput.max = `${pageElement.getBoundingClientRect().height + 1}`;
     updateFrameTag()
-});
+}));
 
-document.getElementById('frame-hoz-position').addEventListener('input',(evt)=>{
+['input','change'].forEach(eventType=>document.getElementById('frame-hoz-position').addEventListener(eventType,(evt)=>{
     frameTag.styles.left = `${Math.round(evt.target.value)}px`;
     updateFrameTag();
-});
+}));
 
-document.getElementById('frame-ver-position').addEventListener('input',(evt)=>{
+['input','change'].forEach(eventType=>document.getElementById('frame-ver-position').addEventListener(eventType,(evt)=>{
     frameTag.styles.top = `${Math.round(evt.target.value)}px`;
     updateFrameTag();
-});
+}));
 
 
 
