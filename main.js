@@ -40,11 +40,11 @@ let backgroundStyles = {
 let frameTag = {
     tag : 'div',
     styles : {
-        '-webkit-mask-image'    : `url(assets/masks/RightMask-min.png)`,
-        'top'                   : '0',
-        'left'                  : '0',
+        '-webkit-mask-image'    : `url(assets/masks/WC_Vertical_Right_1_rptY-min.png)`,
+        'top'                   : '',
+        'left'                  : '',
         'height'                : '100%',
-        'width'                 : '100%',
+        'width'                 : '100%'
     },
     attributes : {
         'id'        : undefined,
@@ -71,13 +71,8 @@ let imageTag = {
     
 }
 
-
-
-
-
-updateImageTag();
-updateFrameTag();
-printCodeForStyleEditor();
+document.getElementById('image-URL').setAttribute('value', imageTag.attributes.src);
+document.getElementById('mask-URL').setAttribute('value', 'assets/masks/WC_Vertical_Right_1_rptY-min.png');
 
 function printCodeForStyleEditor() {
     const frameRules = [
@@ -117,11 +112,12 @@ function updateImageTag() {
     Object.assign(imageElement, imageTag.attributes);
     let rulesString = Object.entries(imageTag.styles).map(rule => [`${rule[0]}: ${rule[1]};`]);
     imageElement.setAttribute('style', rulesString.join(' '));
-    printCodeForTextEditor()
+    printCodeForTextEditor();
 
 }
 
 ['input','change'].forEach(eventType=>document.getElementById('image-URL').addEventListener(eventType,(evt)=>{
+    console.log(evt.target.value);
     imageTag.attributes.src = evt.target.value;
     document.getElementById('image-size').dispatchEvent(new Event('change'));
     updateImageTag()
@@ -134,8 +130,7 @@ function updateImageTag() {
     updateImageTag()
 }));
 
-['input','change','load'].forEach(eventType=>document.getElementById('image-size').addEventListener(eventType,(evt)=>{
-    console.log('fart');
+['input','change'].forEach(eventType=>document.getElementById('image-size').addEventListener(eventType,(evt)=>{
     const orientation = frameElement.getBoundingClientRect().height > frameElement.getBoundingClientRect().width ? 'portrait' : 'landscape';
     const hozInput = document.getElementById('image-hoz-position');
     const verInput = document.getElementById('image-ver-position');
@@ -186,7 +181,9 @@ function updateFrameTag() {
         delete frameTag.styles[`-webkit-mask-position-x`];  // could possibly be done with one line, deleting only x or y if needed
         delete frameTag.styles[`-webkit-mask-position-y`];
     };
+    console.log(evt.target.value);
     getRatio(evt.target.value);
+    console.log('bgImgRatio after getRatio: ' + frameTag.meta.bgImgRatio);
     document.getElementById('frame-size').dispatchEvent(new Event('change'));
     updateFrameTag();
 }));
@@ -199,6 +196,8 @@ function updateFrameTag() {
     // take % value of input and apply it to frames height
     if(orientation === 'portrait'){
         frameTag.styles.height = `${Math.round(pageElement.getBoundingClientRect().height * (parseFloat(evt.target.value) / 100))}px`;
+        
+        console.log(parseFloat(frameTag.styles.height) * frameTag.meta.bgImgRatio);
         frameTag.styles.width = parseFloat(frameTag.styles.height) * frameTag.meta.bgImgRatio + 'px';
     } else {
         frameTag.styles.width = `${Math.round(pageElement.getBoundingClientRect().width * (parseFloat(evt.target.value) / 100))}px`;
@@ -210,6 +209,7 @@ function updateFrameTag() {
     hozInput.max = `${pageElement.getBoundingClientRect().width + 1}`;
     verInput.min = `${(frameElement.getBoundingClientRect().height + 1) * -1}`;
     verInput.max = `${pageElement.getBoundingClientRect().height + 1}`;
+    console.log(frameTag.styles.width);
     updateFrameTag()
 }));
 
@@ -323,3 +323,10 @@ function setMask(preset) {
 
     updateFrameTag();
 }
+
+
+
+Array.from(document.querySelectorAll('input[type="text"]')).forEach(input=>{input.dispatchEvent(new Event('input'))});
+printCodeForStyleEditor();
+
+

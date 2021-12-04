@@ -23,11 +23,11 @@
                         <h4>Image Settings</h4>
                         <div>
                             <label for='image-URL'>Image</label>
-                            <input type='url' id='image-URL' class='input' placeholder='image url' data='background-image' value='' />
+                            <input type='text' id='image-URL' class='input' placeholder='image url' data='background-image' />
                         </div>
                         <div>
                             <label for='image-name'>Image Name</label>
-                            <input type='text' id='image-name' class='input' placeholder='image name' title='' value=''/>
+                            <input type='text' id='image-name' class='input' placeholder='image name' title=''/>
                         </div>
                         <div>
                             <label for='image-size'>Image Size</label>
@@ -47,7 +47,7 @@
                         <h4>Frame/Blend Settings</h4>
                         <div id='mask-URL-container'>
                             <label for='mask-URL'>Frame</label>
-                            <input type='url' id='mask-URL' class='input' placeholder='frame url' value='' />
+                            <input type='text' id='mask-URL' class='input' placeholder='frame url' />
                             <div id='mask-presets'>
                                 <div class='preset' onclick='setMask(this)' data-coverage='top-and-left' style='background: red'><div style='background:#888;width:50%;height:50%;position:absolute;bottom:0;right:0;'></div></div>
                                 <div class='preset' onclick='setMask(this)' data-coverage='top'><div style='height: 50%'></div></div>
