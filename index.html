@@ -20,34 +20,9 @@
                     <p>Anything made by <em>framer</em> is free to use in any works, including commercial use, no attribution needed-- this includes the preset masks.  <em>framer</em> itself is subject to the <a title='Go to License' href='https://github.com/Gazook89/framer/blob/main/LICENSE'>GPL-3.0 License</a>.</p>
                 </details>
                 <div class='controls'>
-                        <h4>Image Settings</h4>
-                        <div>
-                            <label for='image-URL'>Image</label>
-                            <input type='text' id='image-URL' class='input' placeholder='image url' data='background-image' />
-                        </div>
-                        <div>
-                            <label for='image-name'>Image Name</label>
-                            <input type='text' id='image-name' class='input' placeholder='image name' title=''/>
-                        </div>
-                        <div>
-                            <label for='image-size'>Image Size</label>
-                            <input type='range' id='image-size' class='input' min='0' max='300' value='100' list='image-number'/>
-                            <datalist id="image-number">
-                                <option>100</option>
-                            </datalist>
-                        </div>
-                        <div>
-                            <label for='image-hoz-position'>Horizontal Position</label>
-                            <input type='range' id='image-hoz-position' class='input' min='' max='' step='1' value='0'/>
-                        </div>
-                        <div>
-                            <label for='image-ver-position'>Vertical Position</label>
-                            <input type='range' id='image-ver-position' class='input' min='' max='' step='1' value='0'/>
-                        </div>
                         <h4>Frame/Blend Settings</h4>
                         <div id='mask-URL-container'>
                             <label for='mask-URL'>Frame</label>
-                            <input type='text' id='mask-URL' class='input' placeholder='frame url' />
                             <div id='mask-presets'>
                                 <div class='preset' onclick='setMask(this)' data-coverage='top-and-left' style='background: red'><div style='background:#888;width:50%;height:50%;position:absolute;bottom:0;right:0;'></div></div>
                                 <div class='preset' onclick='setMask(this)' data-coverage='top'><div style='height: 50%'></div></div>
@@ -67,21 +42,6 @@
                                 <div class='preset'><div></div></div>
                             </div>
                         </div>
-                        <div>
-                            <label for='frame-size'>Frame Size</label>
-                            <input type='range' id='frame-size' class='input' min='0' max='300' value='100' list='frame-number'/>
-                            <datalist id="frame-number">
-                                <option>100</option>
-                            </datalist>
-                        </div>
-                        <div>
-                            <label for='frame-hoz-position'>Frame Horizontal Position</label>
-                            <input type='range' id='frame-hoz-position' class='input' min='0' max='100' step='1' value='0'/>
-                        </div>
-                        <div>
-                            <label for='frame-ver-position'>Frame Vertical Position</label>
-                            <input type='range' id='frame-ver-position' class='input' min='0' max='100' step='1' value='0'/>
-                        </div>
                 </div>
                 <div id='code'>
                     <h3>Text Editor:</h3>
@@ -100,19 +60,20 @@
                 </div>
             
             </div>
-            <div class='right pane'>
+            <div id='right-pane' class='right pane'>
                 <style></style>
                 <div id='pages'>
                     <div id='p1' class='page'>
-                        <div id='watercolor-frame' class='frame'>
-                            <img alt='' id='' src='' style='' />
-                        </div>
                     </div>
                 </div>
                 <div id='preview-hover-area'>
                     <div id='preview-tools'>
-                        <div id='zoom-out' class='preview-tool-item' onclick="zoomOut()">-</div>
-                        <div id='zoom-in' class='preview-tool-item' onclick="zoomIn()">+</div>
+                        <button id='zoom-out' class='preview-tool-item' onclick="zoomOut()">-</button>
+                        <button id='zoom-in' class='preview-tool-item' onclick="zoomIn()">+</button>
+                        <button id='frame-control' class='preview-tool-item left active'>frame</button>
+                        <button id='image-control' class='preview-tool-item right'>img</button>
+                        <input id='name-input' class='preview-tool-item' type='text' placeholder='name' />
+                        <input id='url-input' class='preview-tool-item' type='text' placeholder='https://duckduckgo.com' />
                     </div>
                 </div>
             </div>
