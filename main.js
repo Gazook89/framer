@@ -246,40 +246,40 @@ function resizeHandles(el){
     for(let x=0;x<4;x++){
         const handleVerticalLoc = handleArray[x][0];
         const handleHorizontalLoc = handleArray[x][1];
-        let posY = el.getBoundingClientRect()['top'] - pane.getBoundingClientRect()['top'] + pane.scrollTop;
-        let posX = el.getBoundingClientRect()['left'] - pane.getBoundingClientRect()['left'] + pane.scrollLeft;  // "top" and "left" could be replaced with variables, so "bottom" and "right" could be passed in instead.
+        let posY = el.getBoundingClientRect()[handleVerticalLoc] - pane.getBoundingClientRect()[handleVerticalLoc] + pane.scrollTop;
+        let posX = el.getBoundingClientRect()[handleHorizontalLoc] - pane.getBoundingClientRect()[handleHorizontalLoc] + pane.scrollLeft;  // "top" and "left" could be replaced with variables, so "bottom" and "right" could be passed in instead.
 
 
 
         const newHandle = Object.assign(document.createElement('div'), {id:'nw-handle', className:'handle'});
-        newHandle.style['top'] = posY - 12 + 'px';
-        newHandle.style['left'] = posX - 12 + 'px';
+        newHandle.style[handleVerticalLoc] = posY - 12 + 'px';
+        newHandle.style[handleHorizontalLoc] = posX - 12 + 'px';
         newHandle.addEventListener('mousedown', resize);
 
 
         function resize(evt){
             evt.preventDefault();
 
-            const parentY = el.parentElement.getBoundingClientRect()['top'];
-            const parentX = el.parentElement.getBoundingClientRect()['left'];
+            const parentY = el.parentElement.getBoundingClientRect()[handleVerticalLoc];
+            const parentX = el.parentElement.getBoundingClientRect()[handleHorizontalLoc];
 
 
-            let shiftY = evt.clientY - newHandle.getBoundingClientRect()['top'];
-            let shiftX = evt.clientX - newHandle.getBoundingClientRect()['left'];
+            let shiftY = evt.clientY - newHandle.getBoundingClientRect()[handleVerticalLoc];
+            let shiftX = evt.clientX - newHandle.getBoundingClientRect()[handleHorizontalLoc];
 
 
             moveAt(evt.pageX, evt.pageY);
 
             function moveAt(pageX, pageY) {
-                newHandle.style['top']= pageY - shiftY - pane.getBoundingClientRect()['top'] + 'px';
-                newHandle.style['left'] = pageX - shiftX - pane.getBoundingClientRect()['left'] + 'px';
+                newHandle.style[handleVerticalLoc]= pageY - shiftY - pane.getBoundingClientRect()[handleVerticalLoc] + 'px';
+                newHandle.style[handleHorizontalLoc] = pageX - shiftX - pane.getBoundingClientRect()[handleHorizontalLoc] + 'px';
             }
         
             function onMouseMove(evt) {
                 moveAt(evt.pageX, evt.pageY);
 
-                el.style['top'] = evt.pageY + newHandle.getBoundingClientRect().height - shiftY - parentY + 'px';
-                el.style['left'] = evt.pageX + newHandle.getBoundingClientRect().width - shiftX - parentX + 'px';
+                el.style[handleVerticalLoc] = evt.pageY + newHandle.getBoundingClientRect().height - shiftY - parentY + 'px';
+                el.style[handleHorizontalLoc] = evt.pageX + newHandle.getBoundingClientRect().width - shiftX - parentX + 'px';
 
  
             }
