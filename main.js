@@ -223,80 +223,171 @@ document.getElementById('image-control').addEventListener('click', (evt)=>{
     evt.target.classList.add('active');
     document.getElementById('frame-control').classList.remove('active');
     document.getElementById('url-input').value = image.url;
-    resizeHandles(document.querySelector('.framed-image'));
+    transformOverlay(document.querySelector('.framed-image'));
 
 })
 
-const handles = {
-    nw : {
-        resize() {
-            console.log('northwest handle');
-        }
-    },
-    ne : {
-        log() {
-            console.log(('northeast handle'));
-        }
+
+
+function transformOverlay(targetElement) {
+    const overlay = new (function() {
+        this.top = targetElement.offsetTop + targetElement.parentElement.offsetTop + targetElement.parentElement.parentElement.offsetTop;
+        this.right = targetElement.offsetLeft + targetElement.offsetWidth;
+        this.bottom = targetElement.offsetTop + targetElement.offsetHeight;
+        this.left = targetElement.offsetLeft + targetElement.parentElement.offsetLeft + targetElement.parentElement.parentElement.offsetLeft;
+        this.width = targetElement.offsetWidth;
+        this.height = targetElement.offsetHeight;
+    });
+
+    const handles = 
+    [
+        scale = {id: 'scale', top:-30, left: -30},
+        topLeft = {id: 'top-left-handle', top: -7, left: -7},
+        topRight = {id: 'top-right-handle', top: -7, right: -7},
+        bottomRight = {id: 'bottom-right-handle', bottom: -7, right: -7},
+        bottomLeft = {id: 'bottom-left-handle', bottom: -7, left: -7}
+    ];
+
+    function createOverlayBox() {
+        const overlayElement = Object.assign(document.createElement('div'), {className:'overlay'});
+        ['top', 'left', 'width', 'height'].forEach(property=>{
+            overlayElement.style[property] = overlay[property] + 'px';
+        });
+        createHandles(overlayElement);
+        return overlayElement;
     }
-}
 
-function resizeHandles(el){
-    const handleArray = [['top', 'left'], ['top','right'], ['bottom','right'],  ['bottom','left']];
-    const pane = document.getElementById('right-pane');
-    for(let x=0;x<4;x++){
-        const handleVerticalLoc = handleArray[x][0];
-        const handleHorizontalLoc = handleArray[x][1];
-        let posY = el.getBoundingClientRect()[handleVerticalLoc] - pane.getBoundingClientRect()[handleVerticalLoc] + pane.scrollTop;
-        let posX = el.getBoundingClientRect()[handleHorizontalLoc] - pane.getBoundingClientRect()[handleHorizontalLoc] + pane.scrollLeft;  // "top" and "left" could be replaced with variables, so "bottom" and "right" could be passed in instead.
-
-
-
-        const newHandle = Object.assign(document.createElement('div'), {id:'nw-handle', className:'handle'});
-        newHandle.style[handleVerticalLoc] = posY - 12 + 'px';
-        newHandle.style[handleHorizontalLoc] = posX - 12 + 'px';
-        newHandle.addEventListener('mousedown', resize);
-
-
-        function resize(evt){
-            evt.preventDefault();
-
-            const parentY = el.parentElement.getBoundingClientRect()[handleVerticalLoc];
-            const parentX = el.parentElement.getBoundingClientRect()[handleHorizontalLoc];
-
-
-            let shiftY = evt.clientY - newHandle.getBoundingClientRect()[handleVerticalLoc];
-            let shiftX = evt.clientX - newHandle.getBoundingClientRect()[handleHorizontalLoc];
-
-
-            moveAt(evt.pageX, evt.pageY);
-
-            function moveAt(pageX, pageY) {
-                newHandle.style[handleVerticalLoc]= pageY - shiftY - pane.getBoundingClientRect()[handleVerticalLoc] + 'px';
-                newHandle.style[handleHorizontalLoc] = pageX - shiftX - pane.getBoundingClientRect()[handleHorizontalLoc] + 'px';
+    function createHandles(overlayBox) {
+        handles.forEach(handle=>{
+            const handleElement = Object.assign(document.createElement('div'), {id: handle.id, className:'handle'});
+            Object.keys(handle).forEach(property=>{
+                handleElement.style[property] = handle[property] + 'px';
+            });
+            if(handle.id == 'scale'){
+                handleElement.addEventListener('mousedown', resize);
+            } else {
+                handleElement.addEventListener('mousedown', resize);
             }
-        
-            function onMouseMove(evt) {
-                moveAt(evt.pageX, evt.pageY);
+            overlayBox.append(handleElement)
+        })
 
-                el.style[handleVerticalLoc] = evt.pageY + newHandle.getBoundingClientRect().height - shiftY - parentY + 'px';
-                el.style[handleHorizontalLoc] = evt.pageX + newHandle.getBoundingClientRect().width - shiftX - parentX + 'px';
+    }
 
  
-            }
 
-            document.addEventListener('mousemove', onMouseMove);
+    function resize(evt) {
+        evt.preventDefault();
 
-            newHandle.onmouseup = function() {
-                document.removeEventListener('mousemove', onMouseMove);
-                newHandle.onmouseup = null;
-                
+        const handle = evt.target;
+        const overlayBox = handle.parentElement;
+
+        const anchor = [overlayBox.offsetLeft + overlayBox.offsetWidth, overlayBox.offsetTop + overlayBox.offsetHeight];
+
+        const startX = evt.pageX;
+        const startY = evt.pageY;
+        let startWidth = targetElement.width;
+        let startHeight = targetElement.height;
+        let aspectRatio = startHeight / startWidth;
+
+
+        moveAt(evt.pageX, evt.pageY);
+
+        function moveAt(pageX, pageY) {
+            overlayBox.style['width'] =  startWidth - (pageX - startX) + 'px';
+            if(handle.id === 'scale'){
+                overlayBox.style['height'] = parseFloat(overlayBox.style.width) * aspectRatio + 'px';
+            } else {
+                overlayBox.style['height'] =  startHeight - (pageY - startY) + 'px';
+                targetElement.style['height'] = overlayBox.style.height;
             }
-            
+            overlayBox.style['top'] = anchor[1] - parseFloat(overlayBox.style.height) + 'px';
+            overlayBox.style['left'] = anchor[0] - parseFloat(overlayBox.style.width) + 'px';
+
+            targetElement.style['width'] = overlayBox.style.width;
+            targetElement.style['top'] = parseFloat(overlayBox.style.top) - 50 + 'px';
+            targetElement.style['left'] = parseFloat(overlayBox.style.left) - 60 + 'px';
+        }
+    
+        function onMouseMove(evt) {
+            moveAt(evt.pageX, evt.pageY);            
+
         }
 
-        pane.append(newHandle);
+        document.addEventListener('mousemove', onMouseMove);
+
+        document.onmouseup = function() {
+            document.removeEventListener('mousemove', onMouseMove);
+            handle.onmouseup = null;
+            
+        }
     }
+
+    document.getElementById('right-pane').append(createOverlayBox());
 }
+
+// function resizeHandles(el){
+//     const handleArray = [['top', 'left'], ['top','right'], ['bottom','right'],  ['bottom','left']];
+//     const pane = document.getElementById('right-pane');
+//     for(let x=0;x<4;x++){
+//         const handleVerticalLoc = handleArray[x][0] == 'top' ? 0 : el.getBoundingClientRect().height + 12;
+//         const handleHorizontalLoc = handleArray[x][1] == 'left' ? 0 : el.getBoundingClientRect().width + 12;
+
+//         let posY = el.getBoundingClientRect()['top'] - pane.getBoundingClientRect()['top'] + pane.scrollTop;
+//         let posX = el.getBoundingClientRect()['left'] - pane.getBoundingClientRect()['left'] + pane.scrollLeft;  // "top" and "left" could be replaced with variables, so "bottom" and "right" could be passed in instead.
+
+
+
+//         const newHandle = Object.assign(document.createElement('div'), {id:'nw-handle', className:'handle'});
+//         newHandle.style['top'] = posY - 12 + handleVerticalLoc + 'px';
+//         newHandle.style['left'] = posX - 12 + handleHorizontalLoc + 'px';
+//         newHandle.addEventListener('mousedown', resize);
+
+
+//         function resize(evt){
+//             evt.preventDefault();
+
+//             const parentY = el.parentElement.getBoundingClientRect()['top'];
+//             const parentX = el.parentElement.getBoundingClientRect()['left'];
+
+
+//             let shiftY = evt.clientY - newHandle.getBoundingClientRect()['top'];
+//             let shiftX = evt.clientX - newHandle.getBoundingClientRect()['left'];
+
+
+//             let startHeight = el.height;
+//             let startWidth = el.width;
+
+
+//             moveAt(evt.pageX, evt.pageY);
+
+//             function moveAt(pageX, pageY) {
+//                 newHandle.style['top']= pageY - shiftY - pane.getBoundingClientRect()['top'] + 'px';
+//                 newHandle.style['left'] = pageX - shiftX - pane.getBoundingClientRect()['left'] + 'px';
+//             }
+        
+//             function onMouseMove(evt) {
+//                 moveAt(evt.pageX, evt.pageY);
+
+//                 el.style['top'] = evt.pageY + newHandle.getBoundingClientRect().height - shiftY - parentY + 'px';
+//                 el.style['left'] = evt.pageX + newHandle.getBoundingClientRect().width - shiftX - parentX + 'px';
+//                 // el.style['height'] = startHeight - (evt.pageY + newHandle.getBoundingClientRect().height - shiftY - parentY) + 'px';
+//                 el.style['width'] = startWidth - (evt.pageX + newHandle.getBoundingClientRect().width - shiftX - parentX) + 'px';
+ 
+//             }
+
+//             document.addEventListener('mousemove', onMouseMove);
+
+//             newHandle.onmouseup = function() {
+//                 document.removeEventListener('mousemove', onMouseMove);
+//                 newHandle.onmouseup = null;
+                
+//             }
+            
+//         }
+
+//         pane.append(newHandle);
+//     }
+// }
 
 
 
@@ -304,6 +395,7 @@ document.getElementById('frame-control').addEventListener('click', (evt)=>{
     evt.target.classList.add('active');
     document.getElementById('image-control').classList.remove('active');
     document.getElementById('url-input').value = frame.url;
+    transformOverlay(document.querySelector('.frame'));
 })
 
 document.getElementById('url-input').addEventListener('input', (evt)=>{
