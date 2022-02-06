@@ -68,10 +68,15 @@
                 </div>
                 <div id='preview-hover-area'>
                     <div id='preview-tools'>
-                        <button id='zoom-out' class='preview-tool-item' onclick="zoomOut()">-</button>
-                        <button id='zoom-in' class='preview-tool-item' onclick="zoomIn()">+</button>
-                        <button id='frame-control' class='preview-tool-item left active'>frame</button>
-                        <button id='image-control' class='preview-tool-item right'>img</button>
+                        <div class='preview-tool-group'>
+                            <button id='zoom-out' class='preview-tool-item' onclick="zoomOut()">-</button>
+                            <button id='zoom-in' class='preview-tool-item' onclick="zoomIn()">+</button>
+                        </div>
+                        <div class='preview-tool-group'>
+                            <button id='frame-control' class='preview-tool-item left active'>frame</button>
+                            <button id='mask-control' class='preview-tool-item'>mask</button>
+                            <button id='image-control' class='preview-tool-item right'>img</button>
+                        </div>
                         <input id='name-input' class='preview-tool-item' type='text' placeholder='name' />
                         <input id='url-input' class='preview-tool-item' type='text' placeholder='https://duckduckgo.com' />
                     </div>
@@ -84,4 +89,4 @@
        
     </body>
     <script src='main.js'></script>
-</html
+</html>
