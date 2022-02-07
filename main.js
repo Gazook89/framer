@@ -451,15 +451,16 @@ document.getElementById('name-input').addEventListener('click', (evt)=>{
 
 document.getElementById('name-input').addEventListener('input', (evt)=>{
     evt.target.value = evt.target.value.split(' ').join('-');
-    document.querySelector('.framed-image').id = evt.target.value;
-    document.querySelector('.frame').id = `${evt.target.value}-frame`;
     const regMatch = evt.target.value.match(/(.*)(-frame)/);
     
     evt.target.value = regMatch ? `${regMatch[1]}-frame` : evt.target.value + '-frame';
-    evt.target.setSelectionRange(evt.target.selectionStart, evt.target.value.length - 6)
-    frame.name = evt.target.value;
-    image.name = evt.target.value;
+    document.querySelector('.framed-image').id = regMatch[1];
+    document.querySelector('.frame').id = `${evt.target.value}`;
+    evt.target.setSelectionRange(evt.target.selectionStart, evt.target.value.length - 6);
 })
+
+
+const markdown = {};
 
 let observer = new MutationObserver(mutationRecords => {
     const textEditor = document.getElementById('text-code');
@@ -468,15 +469,27 @@ let observer = new MutationObserver(mutationRecords => {
         Object.values(mutation.target.style).forEach(prop=>{
             const propKeyValue = prop + ':' + mutation.target.style[prop];
             styles.push(propKeyValue);
-        })
-        textEditor.value = `{{#${mutation.target.id},${mutation.target.className},${styles.join(',')}}}`;
-        console.log(mutation.target.style);
+        });
+        if(mutation.target.className === 'framed-image'){
+            markdown.img = `![${mutation.target.id}](${mutation.target.src}){${mutation.target.className},${styles.join(',')}}`;
+        } else {
+            markdown.frame = `#${mutation.target.id},${mutation.target.className},${styles.join(',')}`;
+        }
+        textEditor.value = [
+            `{{${markdown.frame}`,
+            `${markdown.img}`,
+            `}}`
+        ].join('\n');
+
+    console.log(mutationRecords);
     })
 })
 
 observer.observe(document.querySelector('.frame'), {
-    childList: true,
-    subtree: true,
+    attributes: true
+})
+
+observer.observe(document.querySelector('.framed-image'), {
     attributes: true
 })
 
