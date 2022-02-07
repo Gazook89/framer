@@ -172,8 +172,8 @@ image.render();
 
 
 document.getElementById('image-control').addEventListener('click', (evt)=>{
+    document.getElementsByClassName('active')[0].classList.remove('active');
     evt.target.classList.add('active');
-    document.getElementById('frame-control').classList.remove('active');
     document.getElementById('url-input').value = image.url;
     transformOverlay(document.querySelector('.framed-image'));
 
@@ -182,16 +182,24 @@ document.getElementById('image-control').addEventListener('click', (evt)=>{
 
 
 
-function transformOverlay(targetElement) {
+function transformOverlay(targetElement, mask) {
     document.querySelector('.overlay')?.remove();
     const overlay = new (function() {
-        this.top = targetElement.offsetTop + targetElement.parentElement.offsetTop + targetElement.parentElement.parentElement.offsetTop;
-        this.right = targetElement.offsetLeft + targetElement.offsetWidth;
-        this.bottom = targetElement.offsetTop + targetElement.offsetHeight;
+        this.top = targetElement.offsetTop + targetElement.parentElement.offsetTop + targetElement.parentElement.parentElement.offsetTop ;
+        // this.right = targetElement.offsetLeft + targetElement.offsetWidth;   // don't think is needed or wanted?
+        // this.bottom = targetElement.offsetTop + targetElement.offsetHeight;  // don't think is needed or wanted?
         this.left = targetElement.offsetLeft + targetElement.parentElement.offsetLeft + targetElement.parentElement.parentElement.offsetLeft;
         this.width = targetElement.offsetWidth;
         this.height = targetElement.offsetHeight;
     });
+
+    if(mask){
+        overlay.top += targetElement.style.maskPosition ? parseInt(targetElement.style.maskPosition.match(/(-?\d*).*\s(-?\d*)/)[2]) : 0;
+        overlay.left += targetElement.style.maskPosition ? parseInt(targetElement.style.maskPosition.match(/(-?\d*).*\s(-?\d*)/)[1]) : 0;
+        // overlay.width = targetElement.style.maskPosition ? 
+
+    }
+    
 
     const handles = 
     [
@@ -207,8 +215,8 @@ function transformOverlay(targetElement) {
         ['top', 'left', 'width', 'height'].forEach(property=>{
             overlayBox.style[property] = overlay[property] + 'px';
         });
-        createHandles(overlayBox);
-        overlayBox.addEventListener('mousedown', initMove);
+        if(mask != true){createHandles(overlayBox)};
+        overlayBox.addEventListener('mousedown', mask == true ? shiftMask : initMove);
         return overlayBox;
     }
 
@@ -228,11 +236,67 @@ function transformOverlay(targetElement) {
 
     }
 
-    function shiftMask() {
+    function shiftMask(evt) {
         // todo:  need a way to be able to shift mask-position on the .frame element.  So the frame element stays in the same place, but the mask inside can be moved around.
         // possibly a third button down with Frame and Image in the toolbar, "Mask".  Or maybe it's holding "Shift" key while in Frame mode.
         // should highlight and unclip the mask when activated.
+        evt.preventDefault();
+        evt.stopPropagation();
+
+        document.getElementById('preview-hover-area').style.display = 'none';
+
+        const overlayBox = evt.target;
+        const page = document.getElementsByClassName('page')[0];
+    
+        let shiftX = evt.clientX - overlayBox.offsetLeft;
+        let shiftY = evt.clientY - overlayBox.offsetTop;
+
+        overlayBox.style.zIndex = 500;
+        overlayBox.style.background = 'red';
+        overlayBox.style.opacity = .3;
+        page.style.overflow = 'unset';
+
+        let maskPos;
+        if(targetElement.style.maskPosition){
+            const maskRegex = targetElement.style.maskPosition.match(/(-?\d*).*\s(-?\d*)/);
+            maskPos = [parseInt(maskRegex[1]), parseInt(maskRegex[2])];
+        } else {
+            maskPos = [0, 0]
+        };
+
+        moveAt(evt.pageX, evt.pageY, evt.movementX, evt.movementY);
+
+        function moveAt(pageX, pageY, movementX, movementY) {
+            
+            overlayBox.style.left = pageX - shiftX  + 'px';
+            overlayBox.style.top = pageY - shiftY  + 'px';
+
+            maskPos[0] = maskPos[0] + movementX ;
+            maskPos[1] = maskPos[1] + movementY ;
+            targetElement.style.maskPosition = `${maskPos[0]}px ${maskPos[1]}px`;
+        }
+    
+        function onMouseMove(evt) {
+            moveAt(evt.pageX, evt.pageY, evt.movementX, evt.movementY);
+        }
+    
+        document.addEventListener('mousemove', onMouseMove);
+    
+        document.onmouseup = function() {
+            document.removeEventListener('mousemove', onMouseMove);
+            document.onmouseup = null;
+            overlayBox.style.zIndex = null;
+            overlayBox.style.opacity = null;
+            overlayBox.style.background = null;
+            page.style.overflow = 'clip';
+    
+            document.getElementById('preview-hover-area').style.display = 'flex';
+    
+        }
+        
     }
+
+
 
     function initMove(evt){
         evt.preventDefault();
@@ -281,6 +345,8 @@ function transformOverlay(targetElement) {
         }
     
     }
+
+
  
 
     function resize(evt) {
@@ -353,10 +419,17 @@ function transformOverlay(targetElement) {
 
 
 document.getElementById('frame-control').addEventListener('click', (evt)=>{
+    document.getElementsByClassName('active')[0].classList.remove('active');
     evt.target.classList.add('active');
-    document.getElementById('image-control').classList.remove('active');
     document.getElementById('url-input').value = frame.url;
     transformOverlay(document.querySelector('.frame'));
+})
+
+document.getElementById('mask-control').addEventListener('click', (evt)=>{
+    document.getElementsByClassName('active')[0].classList.remove('active');
+    evt.target.classList.add('active');
+    document.getElementById('url-input').value = frame.url;
+    transformOverlay(document.querySelector('.frame'), true);
 })
 
 document.getElementById('url-input').addEventListener('input', (evt)=>{
@@ -370,10 +443,20 @@ document.getElementById('url-input').addEventListener('input', (evt)=>{
     
 })
 
+document.getElementById('name-input').addEventListener('click', (evt)=>{
+    if(evt.target.selectionEnd > evt.target.value.length - 6){
+        evt.target.setSelectionRange(evt.target.selectionStart, evt.target.value.length - 6)
+    }
+})
+
 document.getElementById('name-input').addEventListener('input', (evt)=>{
     evt.target.value = evt.target.value.split(' ').join('-');
     document.querySelector('.framed-image').id = evt.target.value;
     document.querySelector('.frame').id = `${evt.target.value}-frame`;
+    const regMatch = evt.target.value.match(/(.*)(-frame)/);
+    
+    evt.target.value = regMatch ? `${regMatch[1]}-frame` : evt.target.value + '-frame';
+    evt.target.setSelectionRange(evt.target.selectionStart, evt.target.value.length - 6)
     frame.name = evt.target.value;
     image.name = evt.target.value;
 })

@@ -132,6 +132,8 @@ strong {
 
 .frame {
     position:absolute;
+    mask-repeat: no-repeat;
+    mask-size: 100% 100%;
 }
 
 
@@ -161,7 +163,7 @@ textarea {
     width: 100%;
     bottom: 0;
     left: 0;
-    height: 20vh;
+    height: 10vh;
     display:flex;
     justify-content: center;
     align-items: center;
