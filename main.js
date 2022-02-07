@@ -461,6 +461,18 @@ document.getElementById('name-input').addEventListener('input', (evt)=>{
     image.name = evt.target.value;
 })
 
+let observer = new MutationObserver(mutationRecords => {
+    mutationRecords.forEach(mutation=>{
+        console.log(mutation.target);
+    })
+})
+
+observer.observe(document.querySelector('.frame'), {
+    childList: true,
+    subtree: true,
+    attributes: true
+})
+
 // function updateImageTag() {
 //     Object.assign(imageElement, imageTag.attributes);
 //     let rulesString = Object.entries(imageTag.styles).map(rule => [`${rule[0]}: ${rule[1]};`]);
