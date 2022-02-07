@@ -462,8 +462,15 @@ document.getElementById('name-input').addEventListener('input', (evt)=>{
 })
 
 let observer = new MutationObserver(mutationRecords => {
+    const textEditor = document.getElementById('text-code');
+    let styles = [];
     mutationRecords.forEach(mutation=>{
-        console.log(mutation.target);
+        Object.values(mutation.target.style).forEach(prop=>{
+            const propKeyValue = prop + ':' + mutation.target.style[prop];
+            styles.push(propKeyValue);
+        })
+        textEditor.value = `{{#${mutation.target.id},${mutation.target.className},${styles.join(',')}}}`;
+        console.log(mutation.target.style);
     })
 })
 
