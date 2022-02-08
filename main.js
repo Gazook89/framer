@@ -41,6 +41,7 @@ class Image {
         const imgElement = Object.assign(document.createElement('img'), {id: this.name, className: 'masked-image', alt: this.altText, src: this.url});
         imgElement.addEventListener('mousedown', this.initMoveImage)
         document.getElementsByClassName('mask')[0].append(imgElement);
+        imgElement.style.width = '100%'
     }
 }
 
@@ -354,6 +355,7 @@ document.getElementById('url-input').addEventListener('input', (evt)=>{
         frame.url = evt.target.value;
     } else {
         document.querySelector('.masked-image').src = evt.target.value;
+        document.querySelector('.masked-image').style.width = '100%';
         image.url = evt.target.value;
     }
     
