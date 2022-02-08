@@ -49,6 +49,14 @@ p {
     letter-spacing: .01em;
 }
 
+a {
+    color: #ffde24
+}
+
+a:visited {
+    color: #cfb106
+}
+
 strong {
 	color: #ff4c4c;
 }
@@ -160,13 +168,13 @@ textarea {
 
 #preview-hover-area {
     position: sticky;
-    width: 100%;
+    width: 80%;
     bottom: 0;
     left: 0;
-    height: 10vh;
+    height: 15vh;
     display:flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
     z-index:500
 }
 
