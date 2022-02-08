@@ -5,104 +5,20 @@ const textCode = document.getElementById('text-code');
 const textCode2 = document.getElementById('text-code2');
 
 const styleCode = document.getElementById('style-code');
-const imageElement = document.querySelector('#watercolor-frame > img');
-const frameElement = document.getElementsByClassName('frame')[0];
 const pageElement = document.getElementsByClassName('page')[0];
 
-// Array.prototype.sample = function(){
-//     return this[Math.floor(Math.random()*this.length)];
-// };
-
-// function randomInteger(min, max) {
-//     return Math.floor(Math.random() * (max - min + 1)) + min;
-// }
-
-// //  BACKGROUND CSS
-// let backgroundStyles = {
-//     frame : {
-//         'background-color'      : '#a005',
-//         'background-size'       : 'cover',
-//         'position'              : 'absolute',
-//         'mask-mode'             : 'alpha',
-//         'mask-position-x'       : '0%',
-//         'mask-position-y'       : '0%',
-//         '-webkit-mask-repeat'   : 'no-repeat',
-//         '-webkit-mask-size'     : 'contain', 
-//         'margin-top'            : '0 !important'
-//     },
-//     img : {
-//         'position'  : 'absolute',
-//         'overflow'  : 'clip'
-
-//     }
-// }
-
-// let frameTag = {
-//     tag : 'div',
-//     styles : {
-//         '-webkit-mask-image'    : `url(assets/masks/WC_Vertical_Right_1_rptY-min.png)`,
-//         'top'                   : '',
-//         'left'                  : '',
-//         'height'                : '100%',
-//         'width'                 : '100%'
-//     },
-//     attributes : {
-//         'id'        : undefined,
-//         'className' : 'frame'
-//     },
-//     meta : {
-//         'bgImgRatio' : undefined
-//     }
-// };
-
-// let imageTag = {
-//     tag : 'img',
-//     styles : {
-//         'top'   : '0',
-//         'left'  : '0'
-//     },
-//     attributes : {
-//         'id'        : '',
-//         'className' : '',
-//         'alt'       : '',
-//         'title'     : '',
-//         'src'       : 'https://images.unsplash.com/photo-1637139500367-b3fd995a31e4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80'
-//     }
+styleCode.value = [
+    `.masked {`,
+    `    position:absolute;`,
+    `    mask-repeat: no-repeat;`,
+    `    mask-size: 100% 100%;`,
+    `}`,
+    ``,
+    `.masked img {`,
+    `    position: absolute;`,
+    `}`
     
-// }
-
-
-
-// function printCodeForStyleEditor() {
-//     const frameRules = [
-//     `.frame {`,
-//     Object.entries(backgroundStyles.frame).map(rule=>[`  ${rule[0]}:${rule[1]};`]).join('\n'),
-//     `}\n`
-//     ].join('\n');
-
-//     const imgRules = [
-//     `.frame img {`,
-//     Object.entries(backgroundStyles.img).map(rule=>[`  ${rule[0]}:${rule[1]};`]).join('\n'),
-//     `}\n`
-//     ].join('\n');
-
-//     styleCode.value = frameRules + '\n' + imgRules;
-//     document.getElementsByTagName('style')[0].innerText = frameRules + '\n' + imgRules;
-// }
-
-
-
-// function printCodeForTextEditor() {
-//     let imageCSSDeclarations = Object.entries(imageTag.styles).map(rule => [`${rule[0]}:${rule[1]}`]);
-//     const imageMarkdown = `![${imageTag.attributes.alt}](${imageTag.attributes.src}) {${[imageTag.attributes.id,imageTag.attributes.className,imageCSSDeclarations].filter(Boolean).join(',')}}`;
-//     let frameCSSDeclarations = Object.entries(frameTag.styles).map(rule => [`${rule[0]}:${rule[1]}`]);
-//     const frameMarkdown = [
-//         `{{${[frameTag.attributes.id,frameTag.attributes.className, frameCSSDeclarations].filter(Boolean).join(',')}`,
-//         imageMarkdown,
-//         `}}`
-//     ].join('\n');
-//     textCode.value = frameMarkdown;
-// }
+].join('\n')
 
 
 
@@ -117,14 +33,14 @@ class Image {
 
     initMoveImage(evt){
         // evt.preventDefault();
-        const element = document.getElementById('framed-image');
+        const element = document.getElementById('masked-image');
         initMove(evt, element)
     }
 
     render(){
-        const imgElement = Object.assign(document.createElement('img'), {id: this.name, className: 'framed-image', alt: this.altText, src: this.url});
+        const imgElement = Object.assign(document.createElement('img'), {id: this.name, className: 'masked-image', alt: this.altText, src: this.url});
         imgElement.addEventListener('mousedown', this.initMoveImage)
-        document.getElementsByClassName('frame')[0].append(imgElement);
+        document.getElementsByClassName('mask')[0].append(imgElement);
     }
 }
 
@@ -137,7 +53,7 @@ class Frame {
     
 
     initMoveFrame(evt){
-        if(document.getElementById('frame-control').classList.contains('active')){
+        if(document.getElementById('mask-control').classList.contains('active')){
             const element = evt.currentTarget;
             initMove(evt, element)
         } else {
@@ -148,7 +64,7 @@ class Frame {
 
 
     render(){
-        const frameElement = Object.assign(document.createElement('div'), {id: `${this.name}-frame`, className: `frame`});
+        const frameElement = Object.assign(document.createElement('div'), {id: `${this.name}-mask`, className: `mask`});
         frameElement.style.maskImage = `url(${this.url})`;
         frameElement.style.width = '100%';
         frameElement.style.height = '100%';
@@ -175,7 +91,7 @@ document.getElementById('image-control').addEventListener('click', (evt)=>{
     document.getElementsByClassName('active')[0].classList.remove('active');
     evt.target.classList.add('active');
     document.getElementById('url-input').value = image.url;
-    transformOverlay(document.querySelector('.framed-image'));
+    transformOverlay(document.querySelector('.masked-image'));
 
 })
 
@@ -311,8 +227,8 @@ function transformOverlay(targetElement, mask) {
         let shiftX = evt.clientX - overlayBox.offsetLeft;
         let shiftY = evt.clientY - overlayBox.offsetTop;
 
-        let frameShiftY = targetElement.className == 'framed-image' ? targetElement.parentElement.offsetTop  : 0 ;
-        let frameShiftX = targetElement.className == 'framed-image' ? targetElement.parentElement.offsetLeft  : 0 ;
+        let frameShiftY = targetElement.className == 'masked-image' ? targetElement.parentElement.offsetTop  : 0 ;
+        let frameShiftX = targetElement.className == 'masked-image' ? targetElement.parentElement.offsetLeft  : 0 ;
     
         overlayBox.style.zIndex = 500;
         overlayBox.style.opacity = .5;
@@ -422,22 +338,22 @@ document.getElementById('frame-control').addEventListener('click', (evt)=>{
     document.getElementsByClassName('active')[0].classList.remove('active');
     evt.target.classList.add('active');
     document.getElementById('url-input').value = frame.url;
-    transformOverlay(document.querySelector('.frame'));
+    transformOverlay(document.querySelector('.mask'));
 })
 
 document.getElementById('mask-control').addEventListener('click', (evt)=>{
     document.getElementsByClassName('active')[0].classList.remove('active');
     evt.target.classList.add('active');
     document.getElementById('url-input').value = frame.url;
-    transformOverlay(document.querySelector('.frame'), true);
+    transformOverlay(document.querySelector('.mask'), true);
 })
 
 document.getElementById('url-input').addEventListener('input', (evt)=>{
     if(document.getElementById('frame-control').classList.contains('active')){
-        document.querySelector('.frame').style.maskImage = `url(${evt.target.value}`;
+        document.querySelector('.mask').style.maskImage = `url(${evt.target.value}`;
         frame.url = evt.target.value;
     } else {
-        document.querySelector('.framed-image').src = evt.target.value;
+        document.querySelector('.masked-image').src = evt.target.value;
         image.url = evt.target.value;
     }
     
@@ -445,18 +361,18 @@ document.getElementById('url-input').addEventListener('input', (evt)=>{
 
 document.getElementById('name-input').addEventListener('click', (evt)=>{
     if(evt.target.selectionEnd > evt.target.value.length - 6){
-        evt.target.setSelectionRange(evt.target.selectionStart, evt.target.value.length - 6)
+        evt.target.setSelectionRange(evt.target.selectionStart, evt.target.value.length - 5)
     }
 })
 
 document.getElementById('name-input').addEventListener('input', (evt)=>{
     evt.target.value = evt.target.value.split(' ').join('-');
-    const regMatch = evt.target.value.match(/(.*)(-frame)/);
+    const regMatch = evt.target.value.match(/(.*)(-mask)/);
     
-    evt.target.value = regMatch ? `${regMatch[1]}-frame` : evt.target.value + '-frame';
-    document.querySelector('.framed-image').id = regMatch[1];
-    document.querySelector('.frame').id = `${evt.target.value}`;
-    evt.target.setSelectionRange(evt.target.selectionStart, evt.target.value.length - 6);
+    evt.target.value = regMatch ? `${regMatch[1]}-mask` : evt.target.value + '-mask';
+    document.querySelector('.masked-image').id = regMatch[1];
+    document.querySelector('.mask').id = `${evt.target.value}`;
+    evt.target.setSelectionRange(evt.target.selectionStart, evt.target.value.length - 5);
 })
 
 
@@ -470,7 +386,7 @@ let observer = new MutationObserver(mutationRecords => {
             const propKeyValue = prop + ':' + mutation.target.style[prop];
             styles.push(propKeyValue);
         });
-        if(mutation.target.className === 'framed-image'){
+        if(mutation.target.className === 'masked-image'){
             markdown.img = `![${mutation.target.id}](${mutation.target.src}){${mutation.target.className},${styles.join(',')}}`;
         } else {
             markdown.frame = `#${mutation.target.id},${mutation.target.className},${styles.join(',')}`;
@@ -485,138 +401,14 @@ let observer = new MutationObserver(mutationRecords => {
     })
 })
 
-observer.observe(document.querySelector('.frame'), {
+observer.observe(document.querySelector('.mask'), {
     attributes: true
 })
 
-observer.observe(document.querySelector('.framed-image'), {
+observer.observe(document.querySelector('.masked-image'), {
     attributes: true
 })
 
-// function updateImageTag() {
-//     Object.assign(imageElement, imageTag.attributes);
-//     let rulesString = Object.entries(imageTag.styles).map(rule => [`${rule[0]}: ${rule[1]};`]);
-//     imageElement.setAttribute('style', rulesString.join(' '));
-//     printCodeForTextEditor();
-
-// }
-
-// ['input','change'].forEach(eventType=>document.getElementById('image-URL').addEventListener(eventType,(evt)=>{
-//     console.log(evt.target.value);
-//     imageTag.attributes.src = evt.target.value;
-//     document.getElementById('image-size').dispatchEvent(new Event('change'));
-//     updateImageTag()
-// }));
-
-// ['input','change'].forEach(eventType=>document.getElementById('image-name').addEventListener(eventType,(evt)=>{
-//     imageTag.attributes.alt = evt.target.value;
-//     imageTag.attributes.title = evt.target.value;
-//     imageTag.attributes.id = '#' + evt.target.value.split(" ").join("-");
-//     updateImageTag()
-// }));
-
-// ['input','change'].forEach(eventType=>document.getElementById('image-size').addEventListener(eventType,(evt)=>{
-//     const orientation = frameElement.getBoundingClientRect().height > frameElement.getBoundingClientRect().width ? 'portrait' : 'landscape';
-//     const hozInput = document.getElementById('image-hoz-position');
-//     const verInput = document.getElementById('image-ver-position');
-//     // take % value of input and apply it to frames height
-//     if(orientation === 'portrait'){
-//         delete imageTag.styles.width;
-//         imageTag.styles.height = `${Math.round(frameElement.getBoundingClientRect().height * (parseFloat(evt.target.value) / 100))}px`;
-//     } else {
-//         delete imageTag.styles.height;
-//         imageTag.styles.width = `${Math.round(frameElement.getBoundingClientRect().width * (parseFloat(evt.target.value) / 100))}px`;
-//     };
-//     evt.target.setAttribute('value', evt.target.value);
-//     evt.target.setAttribute('title', evt.target.value + '%');
-//     hozInput.min = `${(imageElement.getBoundingClientRect().width + 1) * -1}`;  // the +1 is because of the rounding...without it, it sometimes doesn't allow for shifting completely off page
-//     hozInput.max = `${pageElement.getBoundingClientRect().width + 1}`;
-//     verInput.min = `${(imageElement.getBoundingClientRect().height + 1) * -1}`;
-//     verInput.max = `${pageElement.getBoundingClientRect().height + 1}`;
-//     updateImageTag()
-// }));
-
-// ['input','change'].forEach(eventType=>document.getElementById('image-hoz-position').addEventListener(eventType,(evt)=>{
-//     imageTag.styles.left = `${Math.round(evt.target.value)}px`;
-//     updateImageTag()
-// }));
-
-
-// ['input','change'].forEach(eventType=>document.getElementById('image-ver-position').addEventListener(eventType,(evt)=>{
-//     imageTag.styles.top = `${Math.round(evt.target.value)}px`;
-//     updateImageTag()
-// }));
-
-
-// // MASK
-
-// function updateFrameTag() {
-//     Object.assign(frameElement, frameTag.attributes);
-//     let rulesString = Object.entries(frameTag.styles).map(rule => [`${rule[0]}: ${rule[1]};`]);
-//     frameElement.setAttribute('style', rulesString.join(' '));
-//     printCodeForTextEditor()
-// }
-
-// ['input','change'].forEach(eventType=>document.getElementById('mask-URL').addEventListener(eventType,(evt)=>{
-//     frameTag.styles["-webkit-mask-image"] = evt.target.value.length > 0 ? `url(${evt.target.value})` : '';
-//     isGazookImage = /gazook89/;
-//     isLocalHost = /127.0.0.1/;
-//     if(isGazookImage.test(frameTag.styles["-webkit-mask-image"]) && isLocalHost.test(frameTag.styles["-webkit-mask-image"])  === false){
-//         delete frameTag.styles[`-webkit-mask-repeat`];
-//         delete frameTag.styles[`-webkit-mask-position-x`];  // could possibly be done with one line, deleting only x or y if needed
-//         delete frameTag.styles[`-webkit-mask-position-y`];
-//     };
-//     console.log(evt.target.value);
-//     // getRatio(evt.target.value);
-//     console.log('bgImgRatio after getRatio: ' + frameTag.meta.bgImgRatio);
-//     document.getElementById('frame-size').dispatchEvent(new Event('change'));
-//     updateFrameTag();
-// }));
-
-// ['input','change'].forEach(eventType=>document.getElementById('frame-size').addEventListener(eventType,(evt)=>{
-//     const orientation = pageElement.getBoundingClientRect().height > pageElement.getBoundingClientRect().width ? 'portrait' : 'landscape';
-
-//     const hozInput = document.getElementById('frame-hoz-position');
-//     const verInput = document.getElementById('frame-ver-position');
-//     // take % value of input and apply it to frames height
-//     if(orientation === 'portrait'){
-//         frameTag.styles.height = `${Math.round(pageElement.getBoundingClientRect().height * (parseFloat(evt.target.value) / 100))}px`;
-        
-//         console.log(parseFloat(frameTag.styles.height) * frameTag.meta.bgImgRatio);
-//         frameTag.styles.width = parseFloat(frameTag.styles.height) * frameTag.meta.bgImgRatio + 'px';
-//     } else {
-//         frameTag.styles.width = `${Math.round(pageElement.getBoundingClientRect().width * (parseFloat(evt.target.value) / 100))}px`;
-//         frameTag.styles.height = parseFloat(frameTag.styles.width) * frameTag.meta.bgImgRatio + 'px';
-//     };
-//     evt.target.setAttribute('value', evt.target.value);
-//     evt.target.setAttribute('title', evt.target.value + '%');
-//     hozInput.min = `${(frameElement.getBoundingClientRect().width + 1) * -1}`;  // the +1 is because of the rounding...without it, it sometimes doesn't allow for shifting completely off page
-//     hozInput.max = `${pageElement.getBoundingClientRect().width + 1}`;
-//     verInput.min = `${(frameElement.getBoundingClientRect().height + 1) * -1}`;
-//     verInput.max = `${pageElement.getBoundingClientRect().height + 1}`;
-//     console.log(frameTag.styles.width);
-//     updateFrameTag()
-// }));
-
-// ['input','change'].forEach(eventType=>document.getElementById('frame-hoz-position').addEventListener(eventType,(evt)=>{
-//     frameTag.styles.left = `${Math.round(evt.target.value)}px`;
-//     updateFrameTag();
-// }));
-
-// ['input','change'].forEach(eventType=>document.getElementById('frame-ver-position').addEventListener(eventType,(evt)=>{
-//     frameTag.styles.top = `${Math.round(evt.target.value)}px`;
-//     updateFrameTag();
-// }));
-
-
-
-// function getRatio(image) {
-//     const img = new Image();
-//     img.addEventListener("load", function(){
-//         frameTag.meta.bgImgRatio = Math.round(this.naturalWidth / this.naturalHeight);
-//     });
-//     img.src = image;
-// };
 
 
 //  PREVIEW PANE TOOLS
@@ -698,28 +490,4 @@ const presetMasks = [
         ]
     }
 ]
-
-// function setMask(preset) {
-//     let maskType = preset.getAttribute('data-coverage');
-//     maskType = presetMasks.find(mask => mask.maskName === maskType);
-//     specificMaskFile = maskType.images.sample();
-//     document.getElementById('mask-URL').value = specificMaskFile.url;
-//     if(specificMaskFile.repeat){
-//         frameTag.styles[`-webkit-mask-repeat`] = `repeat-${specificMaskFile.repeat}`;
-//         frameTag.styles[`-webkit-mask-position-${specificMaskFile.repeat}`] = `${randomInteger(0,800)}px`;
-//     } else {
-//         delete frameTag.styles[`-webkit-mask-repeat`];
-//         delete frameTag.styles[`-webkit-mask-position-x`];  // could possibly be done with one line, deleting only x or y if needed
-//         delete frameTag.styles[`-webkit-mask-position-y`];
-//     }
-//     document.getElementById('mask-URL').dispatchEvent(new Event('change'));
-
-//     updateFrameTag();
-// }
-
-
-
-// Array.from(document.querySelectorAll('input[type="text"]')).forEach(input=>{input.dispatchEvent(new Event('input'))});
-// printCodeForStyleEditor();
-
 

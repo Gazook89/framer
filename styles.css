@@ -126,11 +126,11 @@ strong {
     transform-origin:top;
 }
 
-.framed-image {
+.mask img {
     position: absolute;
 }
 
-.frame {
+.mask {
     position:absolute;
     mask-repeat: no-repeat;
     mask-size: 100% 100%;
