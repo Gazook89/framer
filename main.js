@@ -351,13 +351,17 @@ document.getElementById('image-control').addEventListener('click', (evt)=>{
 
 
 document.getElementById('url-input').addEventListener('input', (evt)=>{
-    if(document.getElementById('frame-control').classList.contains('active')){
+    // if(document.getElementById('frame-control').classList.contains('active')){
+    const activeControl = document.querySelector('.active')?.id;
+    if(activeControl === ('frame-control' || 'mask-control')){
         document.querySelector('.mask').style.maskImage = `url(${evt.target.value}`;
         frame.url = evt.target.value;
-    } else {
+    } else if(activeControl === 'image-control') {
         document.querySelector('.masked-image').src = evt.target.value;
         document.querySelector('.masked-image').style.width = '100%';
         image.url = evt.target.value;
+    } else {
+        return
     }
     
 })
