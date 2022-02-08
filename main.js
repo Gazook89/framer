@@ -8,13 +8,13 @@ const styleCode = document.getElementById('style-code');
 const pageElement = document.getElementsByClassName('page')[0];
 
 styleCode.value = [
-    `.masked {`,
+    `.mask {`,
     `    position:absolute;`,
     `    mask-repeat: no-repeat;`,
     `    mask-size: 100% 100%;`,
     `}`,
     ``,
-    `.masked img {`,
+    `.mask img {`,
     `    position: absolute;`,
     `}`
     
@@ -80,10 +80,10 @@ class Frame {
 
 
 
-const frame = new Frame('lava', `assets/masks/WC_Vertical_Right_1_rptY-min.png`);
+const frame = new Frame('forest-path-mask', `assets/masks/WC_Vertical_Right_1_rptY-min.png`);
 frame.render();
 
-const image = new Image('lava', `https://images.unsplash.com/photo-1475598322381-f1b499717dda?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1476&q=80`, 'here is my photo');
+const image = new Image('forest-path', `https://images.unsplash.com/photo-1550100136-e092101726f4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2574&q=80`, 'an illustration');
 image.render();
 
 
@@ -396,8 +396,6 @@ let observer = new MutationObserver(mutationRecords => {
             `${markdown.img}`,
             `}}`
         ].join('\n');
-
-    console.log(mutationRecords);
     })
 })
 
