@@ -31,17 +31,12 @@ class Image {
         this.altText = altText
     }
 
-    initMoveImage(evt){
-        // evt.preventDefault();
-        const element = document.getElementById('masked-image');
-        initMove(evt, element)
-    }
-
     render(){
         const imgElement = Object.assign(document.createElement('img'), {id: this.name, className: 'masked-image', alt: this.altText, src: this.url});
-        imgElement.addEventListener('mousedown', this.initMoveImage)
         document.getElementsByClassName('mask')[0].append(imgElement);
-        imgElement.style.width = '100%'
+        imgElement.style.width = '100%';
+        imgElement.setAttribute('draggable', false);
+
     }
 }
 
@@ -51,25 +46,11 @@ class Frame {
         this.url = url
     }
 
-    
-
-    initMoveFrame(evt){
-        if(document.getElementById('mask-control').classList.contains('active')){
-            const element = evt.currentTarget;
-            initMove(evt, element)
-        } else {
-            return;
-        }
-
-    }
-
-
     render(){
         const frameElement = Object.assign(document.createElement('div'), {id: `${this.name}-mask`, className: `mask`});
         frameElement.style.maskImage = `url(${this.url})`;
         frameElement.style.width = '100%';
         frameElement.style.height = '100%';
-        frameElement.addEventListener('mousedown', this.initMoveFrame, true);
         document.getElementById('p1').append(frameElement);
 
         document.getElementById('url-input').addEventListener('change', this.updateFrame)
@@ -81,21 +62,11 @@ class Frame {
 
 
 
-const frame = new Frame('forest-path-mask', `assets/masks/WC_Vertical_Right_1_rptY-min.png`);
+const frame = new Frame('forest-path', `assets/masks/WC_Vertical_Right_1_rptY-min.png`);
 frame.render();
 
 const image = new Image('forest-path', `https://images.unsplash.com/photo-1550100136-e092101726f4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2574&q=80`, 'an illustration');
 image.render();
-
-
-document.getElementById('image-control').addEventListener('click', (evt)=>{
-    document.getElementsByClassName('active')[0].classList.remove('active');
-    evt.target.classList.add('active');
-    document.getElementById('url-input').value = image.url;
-    transformOverlay(document.querySelector('.masked-image'));
-
-})
-
 
 
 
@@ -280,6 +251,9 @@ function transformOverlay(targetElement, mask) {
         const shiftY = evt.clientY - handle.getBoundingClientRect().top;
         
 
+        let frameShiftY = targetElement.className == 'masked-image' ? targetElement.parentElement.offsetTop  : 0 ;
+        let frameShiftX = targetElement.className == 'masked-image' ? targetElement.parentElement.offsetLeft  : 0 ;
+
         moveAt(evt.pageX, evt.pageY, evt.movementX, evt.movementY);
 
         function moveAt(pageX, pageY, movementX, movementY) {
@@ -312,8 +286,8 @@ function transformOverlay(targetElement, mask) {
 
 
             targetElement.style['width'] = overlayBox.style.width;
-            targetElement.style['top'] = parseFloat(overlayBox.style.top) - 50 + 'px';
-            targetElement.style['left'] = parseFloat(overlayBox.style.left) - 60 + 'px';
+            targetElement.style['top'] = parseFloat(overlayBox.style.top) - frameShiftY - 50 + 'px';
+            targetElement.style['left'] = parseFloat(overlayBox.style.left) - frameShiftX -60 + 'px';
         }
     
         function onMouseMove(evt) {
@@ -336,18 +310,45 @@ function transformOverlay(targetElement, mask) {
 
 
 document.getElementById('frame-control').addEventListener('click', (evt)=>{
-    document.getElementsByClassName('active')[0].classList.remove('active');
-    evt.target.classList.add('active');
-    document.getElementById('url-input').value = frame.url;
-    transformOverlay(document.querySelector('.mask'));
+    if(evt.target.classList.contains('active')){
+        document.querySelector('.overlay').remove();
+        evt.target.classList.remove('active')
+    } else {
+        document.getElementsByClassName('active')[0]?.classList.remove('active');
+        evt.target.classList.add('active');
+        document.getElementById('url-input').value = frame.url;
+        transformOverlay(document.querySelector('.mask'));
+
+    };
 })
 
 document.getElementById('mask-control').addEventListener('click', (evt)=>{
-    document.getElementsByClassName('active')[0].classList.remove('active');
-    evt.target.classList.add('active');
-    document.getElementById('url-input').value = frame.url;
-    transformOverlay(document.querySelector('.mask'), true);
+    if(evt.target.classList.contains('active')){
+        document.querySelector('.overlay').remove();
+        evt.target.classList.remove('active')
+    } else {
+        document.getElementsByClassName('active')[0]?.classList.remove('active');
+        evt.target.classList.add('active');
+        document.getElementById('url-input').value = frame.url;
+        transformOverlay(document.querySelector('.mask'), true);
+
+    };
 })
+
+document.getElementById('image-control').addEventListener('click', (evt)=>{
+    if(evt.target.classList.contains('active')){
+        document.querySelector('.overlay').remove();
+        evt.target.classList.remove('active')
+    } else {
+        document.getElementsByClassName('active')[0]?.classList.remove('active');
+        evt.target.classList.add('active');
+        document.getElementById('url-input').value = image.url;
+        transformOverlay(document.querySelector('.masked-image'));
+    
+
+    };
+})
+
 
 document.getElementById('url-input').addEventListener('input', (evt)=>{
     if(document.getElementById('frame-control').classList.contains('active')){
