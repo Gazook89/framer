@@ -143,6 +143,8 @@ strong {
     position:absolute;
     mask-repeat: no-repeat;
     mask-size: 100% 100%;
+    background: rgba(255, 0, 0, 0.295);
+    border:3px solid red;
 }
 
 
