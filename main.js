@@ -382,7 +382,7 @@ let observer = new MutationObserver(mutationRecords => {
     let styles = [];
     mutationRecords.forEach(mutation=>{
         Object.values(mutation.target.style).forEach(prop=>{
-            const propKeyValue = prop + ':' + mutation.target.style[prop];
+            const propKeyValue = prop + ':' + mutation.target.style[prop].replace(/"/g, '');
             styles.push(propKeyValue);
         });
         if(mutation.target.className === 'masked-image'){
