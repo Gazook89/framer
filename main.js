@@ -74,8 +74,6 @@ function transformOverlay(targetElement, mask) {
     document.querySelector('.overlay')?.remove();
     const overlay = new (function() {
         this.top = targetElement.offsetTop + targetElement.parentElement.offsetTop + targetElement.parentElement.parentElement.offsetTop ;
-        // this.right = targetElement.offsetLeft + targetElement.offsetWidth;   // don't think is needed or wanted?
-        // this.bottom = targetElement.offsetTop + targetElement.offsetHeight;  // don't think is needed or wanted?
         this.left = targetElement.offsetLeft + targetElement.parentElement.offsetLeft + targetElement.parentElement.parentElement.offsetLeft;
         this.width = targetElement.offsetWidth;
         this.height = targetElement.offsetHeight;
@@ -84,8 +82,6 @@ function transformOverlay(targetElement, mask) {
     if(mask){
         overlay.top += targetElement.style.maskPosition ? parseInt(targetElement.style.maskPosition.match(/(-?\d*).*\s(-?\d*)/)[2]) : 0;
         overlay.left += targetElement.style.maskPosition ? parseInt(targetElement.style.maskPosition.match(/(-?\d*).*\s(-?\d*)/)[1]) : 0;
-        // overlay.width = targetElement.style.maskPosition ? 
-
     }
     
 
@@ -125,9 +121,6 @@ function transformOverlay(targetElement, mask) {
     }
 
     function shiftMask(evt) {
-        // todo:  need a way to be able to shift mask-position on the .frame element.  So the frame element stays in the same place, but the mask inside can be moved around.
-        // possibly a third button down with Frame and Image in the toolbar, "Mask".  Or maybe it's holding "Shift" key while in Frame mode.
-        // should highlight and unclip the mask when activated.
         evt.preventDefault();
         evt.stopPropagation();
 
@@ -351,7 +344,6 @@ document.getElementById('image-control').addEventListener('click', (evt)=>{
 
 
 document.getElementById('url-input').addEventListener('input', (evt)=>{
-    // if(document.getElementById('frame-control').classList.contains('active')){
     const activeControl = document.querySelector('.active')?.id;
     if(activeControl === ('frame-control' || 'mask-control')){
         document.querySelector('.mask').style.maskImage = `url(${evt.target.value}`;
