@@ -403,7 +403,7 @@ document.getElementById('right-pane').addEventListener('click', (evt)=>{
     if(document.querySelector('.overlay').contains(evt.target) || document.querySelector('#preview-tools').contains(evt.target)){
     } else {
         document.querySelector('.overlay').remove()
-        
+        document.getElementsByClassName('active')[0]?.classList.remove('active');
     }
 })
 
