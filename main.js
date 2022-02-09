@@ -398,6 +398,15 @@ let observer = new MutationObserver(mutationRecords => {
     })
 })
 
+document.getElementById('right-pane').addEventListener('click', (evt)=>{
+    console.log(evt.target);
+    if(document.querySelector('.overlay').contains(evt.target) || document.querySelector('#preview-tools').contains(evt.target)){
+    } else {
+        document.querySelector('.overlay').remove()
+        
+    }
+})
+
 observer.observe(document.querySelector('.mask'), {
     attributes: true
 })
