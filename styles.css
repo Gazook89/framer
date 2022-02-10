@@ -362,6 +362,16 @@ textarea {
     box-shadow: 0 0 0 3px black;
 }
 
+/* ::before invisibly increases the size of the overlay so when scroll bar added to pane, the overlay edges aren't right on the pane edges. */
+.overlay::before {
+	content: '';
+	position: absolute;
+	height: 120%;
+	width: 120%;
+	top: -10%;
+	left: -10%;
+}
+
 /* resize handles */
 .handle {
     position:absolute;
