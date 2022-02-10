@@ -399,7 +399,6 @@ let observer = new MutationObserver(mutationRecords => {
 })
 
 document.getElementById('right-pane').addEventListener('click', (evt)=>{
-    console.log(evt.target);
     if(document.querySelector('.overlay').contains(evt.target) || document.querySelector('#preview-tools').contains(evt.target)){
     } else {
         document.querySelector('.overlay').remove()
@@ -420,27 +419,18 @@ observer.observe(document.querySelector('.masked-image'), {
 //  PREVIEW PANE TOOLS
 
 function zoomOut() {
-    const page = document.getElementById('p1');
-    let scale =  page.getBoundingClientRect().width / page.offsetWidth;
-    page.style.transformOrigin = 'top center';
-    page.style.transform = `scale(${scale - .1})`;
-    if(document.querySelector('.overlay')){
-        document.querySelector('.overlay').style.transformOrigin = 'top center';
-        document.querySelector('.overlay').style.transform = `scale(${scale - .1})`
-    } 
-
+    const zoomLayer = document.getElementById('zoom-layer');
+    let scale =  zoomLayer.getBoundingClientRect().width / zoomLayer.offsetWidth;
+    zoomLayer.style.transformOrigin = 'top center';
+    zoomLayer.style.transform = `scale(${scale - .1})`;
 
 }
 
 function zoomIn() {
-    const page = document.getElementById('p1');
-    let scale =  page.getBoundingClientRect().width / page.offsetWidth;
-    page.style.transformOrigin = 'top center';
-    page.style.transform = `scale(${scale + .1})`;
-    if(document.querySelector('.overlay')){
-        document.querySelector('.overlay').style.transformOrigin = 'top center';
-        document.querySelector('.overlay').style.transform = `scale(${scale + .1})`
-    } 
+    const zoomLayer = document.getElementById('zoom-layer');
+    let scale =  zoomLayer.getBoundingClientRect().width / zoomLayer.offsetWidth;
+    zoomLayer.style.transformOrigin = 'top center';
+    zoomLayer.style.transform = `scale(${scale + .1})`;
 }
 
 
