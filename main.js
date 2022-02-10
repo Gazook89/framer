@@ -297,7 +297,7 @@ function transformOverlay(targetElement, mask) {
         }
     }
 
-    document.getElementById('right-pane').append(createOverlayBox());
+    document.getElementById('zoom-layer').append(createOverlayBox());
 }
 
 

@@ -115,6 +115,16 @@ strong {
 }
 
 
+#zoom-layer {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	height: 100vh;
+	position: relative;
+	width: 100%;
+	flex: 1 1 100%;
+}
+
 
 
 #pages {
