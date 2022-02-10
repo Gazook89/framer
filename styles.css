@@ -107,11 +107,15 @@ strong {
     display:flex;
     flex-wrap: wrap;
     justify-content: center;
-    overflow-y: scroll;
     height: 100vh;
     position:relative;
     width: 100%;
     background-color: #293A4B;
+}
+
+#overflow-layer {
+    overflow-y: scroll;
+    width: 100%;
 }
 
 
